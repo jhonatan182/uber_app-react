@@ -6,6 +6,6 @@ import Inicio from "./src/component/Inicio";
 export default function App() {
   
   return (
-    <Inicio />
+    <Login />
   );
 }
