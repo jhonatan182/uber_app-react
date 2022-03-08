@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert,ImageBackground,Image } from 'react-native';
-// import backgroundInicio from '../../assets/backgroundInicio.jpg';
+import { StyleSheet, Text, View, TextInput, Button, Alert,StatusBar,Image } from 'react-native';
 import icono from '../../assets/userIcon.png'
 
 
@@ -25,6 +24,10 @@ const Inicio = () => {
 
     return ( 
         <View style = {styles.container}>
+                  <StatusBar
+                    animated={true}
+                    backgroundColor="#000"
+                     />
                 <View style = {styles.contenedorInicio}>
                     <View style = {styles.barraTitulo}>
                         <Text style ={styles.textoBlanco}>UBER</Text>
@@ -101,32 +104,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     contenedorInicio:{
-        backgroundColor:'none',
-        height:600,
-        width:450,
-        borderRadius:10,
+        height:'100%',
+        width:'100%',
         backgroundColor:'rgba(255, 255, 255, 0.80)'
     },
     encabezado:{
         backgroundColor:'#000',
         width:'100%',
-        height:70,
+        height:'15%',
         textAlign:'center',
         justifyContent:'center',
-        borderBottomLeftRadius:40,
-        borderBottomRightRadius:40,
-        
+        borderBottomLeftRadius:70,
+        borderBottomRightRadius:70,  
     },  
     barraTitulo:{
         backgroundColor:'#000',
-        borderTopLeftRadius:10,
-        borderTopRightRadius:10,
-        paddingBottom:40,
+        paddingBottom:'2%',
         paddingTop:10,
         paddingHorizontal:10,
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
     },
     cuerpoInicio:{
         flex:1,
@@ -146,10 +144,10 @@ const styles = StyleSheet.create({
         borderBottomRightRadius:10
     },
     contenedorPequenio:{
-        height:460,
-        width:400,
+        height:'82%',
+        width:'70%',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
     },
     input:{
         width:250,
@@ -183,18 +181,14 @@ const styles = StyleSheet.create({
         marginBottom:10
     },
     textoBlanco:{
-        color:'#fff'
+        color:'#fff',
+        textAlign:'center'
     },
     footer:{
         padding:10,
         backgroundColor:'#000',
         width:'100%',
         textAlign:'center',
-        borderBottomLeftRadius:10,
-        borderBottomRightRadius:10
-    },
-    imgBackground:{
-        flex:1
     },
     icono:{
         width:40,

@@ -7,6 +7,6 @@ import RecuC from "./src/component/RecuContra";
 export default function App() {
   
   return (
-    <Login />
+    <Inicio />
   );
 }
