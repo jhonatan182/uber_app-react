@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert,ImageBackground,Image } from 'react-native';
-import backgroundInicio from '../../assets/backgroundInicio.jpg';
+// import backgroundInicio from '../../assets/backgroundInicio.jpg';
 import icono from '../../assets/userIcon.png'
+
+
 const Inicio = () => {
+
     const [inicio , setInicio] = useState('');
     const [final , setFinal] = useState('');
     const [conductor , setConductor] = useState('');
@@ -99,28 +102,28 @@ const styles = StyleSheet.create({
     },
     contenedorInicio:{
         backgroundColor:'none',
-        height:'600px',
-        width:'450px',
-        borderRadius:"10px",
+        height:600,
+        width:450,
+        borderRadius:10,
         backgroundColor:'rgba(255, 255, 255, 0.80)'
     },
     encabezado:{
         backgroundColor:'#000',
         width:'100%',
-        height:'70px',
+        height:70,
         textAlign:'center',
         justifyContent:'center',
-        borderBottomLeftRadius:'40px',
-        borderBottomRightRadius:'40px',
+        borderBottomLeftRadius:40,
+        borderBottomRightRadius:40,
         
     },  
     barraTitulo:{
         backgroundColor:'#000',
-        borderTopLeftRadius:'10px',
-        borderTopRightRadius:'10px',
-        paddingBottom:'40px',
-        paddingTop:'10px',
-        paddingHorizontal:'10px',
+        borderTopLeftRadius:10,
+        borderTopRightRadius:10,
+        paddingBottom:40,
+        paddingTop:10,
+        paddingHorizontal:10,
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between'
@@ -139,20 +142,20 @@ const styles = StyleSheet.create({
         shadowRadius: 9.11,
 
         elevation: 14,
-        borderBottomLeftRadius:'10px',
-        borderBottomRightRadius:'10px'
+        borderBottomLeftRadius:10,
+        borderBottomRightRadius:10
     },
     contenedorPequenio:{
-        height:'460px',
-        width:'400px',
+        height:460,
+        width:400,
         justifyContent:'center',
         alignItems:'center'
     },
     input:{
-        width:'250px',
-        padding:'10px',
+        width:250,
+        padding:10,
         borderBottomColor:'#000',
-        borderBottomWidth:'1px'
+        borderBottomWidth:1
     },
     cuerpoInput:{
         flexDirection:'column',
@@ -161,41 +164,41 @@ const styles = StyleSheet.create({
     contenedorInputs:{
         flexDirection:'column',
         justifyContent:'center',
-        padding:'30px',
-        marginBottom:'20px',
-        borderRadius:'15px'
+        padding:30,
+        marginBottom:20,
+        borderRadius:15
     },
     label:{
-        padding:'10px'
+        padding:10
     },
     cuerpoDetalles:{
         flexDirection:'column',
     },  
     inputMulti:{
         borderColor:'#000',
-        borderWidth:'1px',
+        borderWidth:1,
         width:'100%',
-        height:'100px',
-        padding:'10px',
-        marginBottom:'10px'
+        height:100,
+        padding:10,
+        marginBottom:10
     },
     textoBlanco:{
         color:'#fff'
     },
     footer:{
-        padding:'10px',
+        padding:10,
         backgroundColor:'#000',
         width:'100%',
         textAlign:'center',
-        borderBottomLeftRadius:'10px',
-        borderBottomRightRadius:'10px'
+        borderBottomLeftRadius:10,
+        borderBottomRightRadius:10
     },
     imgBackground:{
-        flex:'1'
+        flex:1
     },
     icono:{
-        width:'40px',
-        height:'40px',
+        width:40,
+        height:40,
         resizeMode:'stretch'
     }
 })
