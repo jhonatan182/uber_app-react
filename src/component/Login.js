@@ -17,7 +17,7 @@ const Login = () => {
       return;
     } 
 
-    const url ='http://192.168.0.6:4000/uber/api/autenticacion/inicio-sesion/';
+    const url ='http://192.168.0.2:4000/uber/api/autenticacion/inicio-sesion/';
 
     try {
       
@@ -39,16 +39,18 @@ const Login = () => {
         Alert.alert('No se pudo iniciar sesion', 'Crea una cuenta para empezar o credenciales incorrectas' );
 
       } else {
-
         const {nombre ,apellido} = resultado.data.usuario;
 
         const usuarioAutenticado = JSON.stringify (resultado.data);
         await AsyncStorage.setItem('usuarioAutenticado', usuarioAutenticado);
+
         Alert.alert('Inicio de sesion exitoso' , `Bienvenido de nuevo ${nombre} ${apellido} `);
+        console.log(resultado.data.token);
       }
 
     } catch (error) {
       console.log(error);
+      Alert.alert('Error!', 'Hubo un problema con la conexion');
     }
       
 

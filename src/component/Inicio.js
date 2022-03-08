@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert,StatusBar,Image } from 'react-native';
 import icono from '../../assets/userIcon.png'
+
+
 const Inicio = () => {
+
     const [inicio , setInicio] = useState('');
     const [final , setFinal] = useState('');
     const [conductor , setConductor] = useState('');
@@ -112,8 +115,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         justifyContent:'center',
         borderBottomLeftRadius:70,
-        borderBottomRightRadius:70,
-        
+        borderBottomRightRadius:70,  
     },  
     barraTitulo:{
         backgroundColor:'#000',
