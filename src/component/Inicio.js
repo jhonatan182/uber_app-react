@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert,ImageBackground,Image } from 'react-native';
-import backgroundInicio from '../../assets/backgroundInicio.jpg';
 import icono from '../../assets/userIcon.png'
 const Inicio = () => {
     const [inicio , setInicio] = useState('');
