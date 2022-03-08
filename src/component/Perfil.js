@@ -1,5 +1,5 @@
 //import { useState } from 'react';
-import imagenUsuario from './assets/default-user.jpg';
+import imagenUsuario from '../../assets/default-user.jpg';
 import { StyleSheet, Text, View , Button , Image } from 'react-native';
 
 
