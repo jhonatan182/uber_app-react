@@ -1,23 +1,57 @@
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StyleSheet, Text, View , Button, TextInput , Image , ImageBackground , Alert} from 'react-native';
 import imagenLogo from '../../assets/uber.png';
 import imagenFondo from '../../assets/fondo.jpg';
-
 
 const Login = () => {
 
     const [correo , setCorreo] = useState('');
     const [password , setPassword] = useState('');
     
-    const handleLogIn = () => {
+
+    const handleLogIn = async () => {
   
     if([correo , password].includes('')) {
       Alert.alert('Error' ,'Datos incorrectos');
       return;
-      
     } 
+
+    const url ='http://192.168.0.6:4000/uber/api/autenticacion/inicio-sesion/';
+
+    try {
       
-    Alert.alert('Urra' ,'Datos completados');
+      const respuesta = await fetch(url , {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+          correo,
+          password
+        })
+      });
+      
+      const resultado = await respuesta.json();
+
+      if(resultado.data.length === 0) {
+        Alert.alert('No se pudo iniciar sesion', 'Crea una cuenta para empezar o credenciales incorrectas' );
+
+      } else {
+
+        const {nombre ,apellido} = resultado.data.usuario;
+
+        const usuarioAutenticado = JSON.stringify (resultado.data);
+        await AsyncStorage.setItem('usuarioAutenticado', usuarioAutenticado);
+        Alert.alert('Inicio de sesion exitoso' , `Bienvenido de nuevo ${nombre} ${apellido} `);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+      
+
     
     
 
