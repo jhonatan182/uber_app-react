@@ -4,6 +4,44 @@ import { StyleSheet, Text, View , Button, TextInput , Image , ImageBackground , 
 
 export default function recuContra () {
 
+    const [correo , setCorreo] = useState('');
+
+    const handleRecuperarContrasenia = async () => {
+
+        if(correo === '') {
+            Alert.alert('Error','Escribe tu correo electronico');
+            return;
+        }
+
+        try {
+            const url ='http://192.168.0.13:4000/uber/api/autenticacion/recuperar-contrasena';
+
+            const respuesta = await fetch(url ,{
+                method: 'POST',
+                body: JSON.stringify({correo}),
+                headers: {
+                    'Content-Type' : 'application/json'
+                }
+            });
+
+            const resultado = await respuesta.json();
+            const {data ,msj} = resultado;
+
+            if(data === 400) {
+                Alert.alert('Error', msj);
+
+            } else if(data === 200 ) {
+                Alert.alert('Confirmación de correo', msj);
+                setCorreo('');
+            }
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return(
         <View style={styles.container}>
             <View style={styles.contenedorRecuComntra}>
@@ -12,9 +50,18 @@ export default function recuContra () {
                 </View>
                 <View style={[styles.contenedorControles, styles.sombraControles]}>
                     <View style={styles.controles}>
-                        <TextInput style={styles.bordes}
+                        <TextInput 
+                            style={styles.input}
                             placeholder='Ingrese su correo electronico'
+                            keyboardType='email-address'
+                            value={correo}
+                            onChangeText ={ text => setCorreo(text) }
                         ></TextInput>
+                        <Button 
+                            title='Recuperar mi contraseña'
+                            color = '#000'
+                            onPress={ handleRecuperarContrasenia }
+                        />
                     </View>
                     <View style={styles.controles}>
                         <Text>Para ayudarle a recuperar su cuenta porfavor ingrese los datos pedidos</Text>
@@ -79,7 +126,12 @@ const styles = StyleSheet.create({
         borderRadius: 23,
     },
 
-    bordes: {
-        borderColor: "#000000",
+    input: {
+        backgroundColor: '#e3e3e3',
+        color: '#000',
+        paddingHorizontal: 25,
+        paddingVertical: 15,
+        width: '100%',
+        marginBottom: 60
     }
 });
