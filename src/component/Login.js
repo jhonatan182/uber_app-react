@@ -4,7 +4,7 @@ import { StyleSheet, Text, View , Button, TextInput , Image , ImageBackground , 
 import imagenLogo from '../../assets/uber.png';
 import imagenFondo from '../../assets/fondo.jpg';
 
-const Login = () => {
+const Login = ({navigation}) => {
 
   const [correo , setCorreo] = useState('');
   const [password , setPassword] = useState('');
@@ -17,7 +17,7 @@ const Login = () => {
       return;
     } 
 
-    const url ='http://192.168.0.13:4000/uber/api/autenticacion/inicio-sesion/';
+    const url ='http://192.168.1.3:4000/uber/api/autenticacion/inicio-sesion/';
 
     try {
       
@@ -46,6 +46,7 @@ const Login = () => {
 
         Alert.alert('Inicio de sesion exitoso' , `Bienvenido de nuevo ${nombre} ${apellido} `);
         console.log(resultado.data.token);
+        navigation.navigate('Inicio');
       }
 
     } catch (error) {
@@ -55,9 +56,6 @@ const Login = () => {
 
   }
 
-  const handleSignUp = () => {
-      Alert.alert('Nueva cuenta', 'Vas a crear una nueva cuenta');
-  }
 
   return (
       
@@ -107,7 +105,7 @@ const Login = () => {
             />
 
           <Text 
-            onPress={ () => Alert.alert('password','Nueva pantalla para password')} 
+            onPress={() => navigation.navigate('RecuContra')}
             style={styles.nuevaContrasena}>Olvidé mi constraseña.
           </Text>
 
@@ -116,10 +114,11 @@ const Login = () => {
           <View  style={styles.signup}>
             <Text 
               style={{marginBottom: 12}}>¿Aún no tienes una cuenta? 
-              <Text style={{fontWeight: '700'}} >Comienza creando una</Text> 
+              <Text style={{fontWeight: '700'}}>Comienza creando una
+              </Text> 
             </Text>
             <Button 
-              onPress={ handleSignUp }
+              onPress={() => navigation.navigate('SignUp')}
               color="#000" 
               title='Crear Cuenta' />
           </View>

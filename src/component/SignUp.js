@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Text, Button , TextInput , View  , StyleSheet , ScrollView , Alert} from 'react-native';
 
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
 
   const [nombre , setNombre] = useState('');
   const [apellido , setApellido] = useState('');
@@ -17,7 +17,7 @@ const SignUp = () => {
       return;
     }
 
-    const url ='http://192.168.0.13:4000/uber/api/usuario/guardar';
+    const url ='http://192.168.1.3:4000/uber/api/usuario/guardar';
 
     try {
       
@@ -140,6 +140,7 @@ const SignUp = () => {
           <Button 
             title='Salir'
             color='#E53229'
+            onPress={() => navigation.navigate('Login')}
           />
         </View>
       </View>
