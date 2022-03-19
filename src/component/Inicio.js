@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button, Alert,StatusBar,Image } from
 import icono from '../../assets/userIcon.png'
 
 
-const Inicio = () => {
+const Inicio = ({navigation}) => {
 
     const [inicio , setInicio] = useState('');
     const [final , setFinal] = useState('');
@@ -31,10 +31,8 @@ const Inicio = () => {
                 <View style = {styles.contenedorInicio}>
                     <View style = {styles.barraTitulo}>
                         <Text style ={styles.textoBlanco}>UBER</Text>
-                        <Image 
-                            source={icono}
-                            style={styles.icono}
-                        />
+                        <Text style={styles.textoBlanco} 
+                              onPress={() => navigation.navigate('Perfil')}>Mi Perfil</Text>
                     </View>
                     <View style = {styles.cuerpoInicio}>
                         <View style = {styles.encabezado}>
