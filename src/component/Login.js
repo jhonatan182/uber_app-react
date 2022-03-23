@@ -17,7 +17,7 @@ const Login = () => {
       return;
     } 
 
-    const url ='http://192.168.0.2:4000/uber/api/autenticacion/inicio-sesion/';
+    const url ='http://192.168.0.3:4000/uber/api/autenticacion/inicio-sesion/';
 
     try {
       

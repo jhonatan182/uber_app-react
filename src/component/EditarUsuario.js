@@ -1,10 +1,57 @@
-import { StyleSheet, Text, View, Button, Alert, StatusBar, Image,TouchableOpacity,ScrollView } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, Button, Alert, StatusBar, Image,TouchableOpacity,ScrollView, TextInput } from 'react-native';
 import icono from '../../assets/userIcono.png'
 import lapiz from '../../assets/pencil.png'
 import bandera from '../../assets/hn.png'
 import google from '../../assets/google.png'
 import facebook from '../../assets/facebook.png'
+import { useState } from "react";
+
 const EditarUsuario = () => {
+    const [nombre, setNombre] = useState('');
+    const [apellido, setApellido] = useState('');
+    const [correo, setCorreo] = useState('');
+    const [telefono, setTelefono] =  useState('');
+    const [password, setPassword] = useState('');
+
+    const handleUpdate = async () => {
+        if([nombre, apellido, correo , password ,telefono].includes('')) {
+            Alert.alert('Error' , 'No puedes dejar el campo vacio');
+            return;
+          }
+
+        const url = 'http://192.168.0.3:4000/uber/api/conductor/modificar';
+
+        try {
+            const respuesta = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombre,
+                    apellido,
+                    correo,
+                    password,
+                    telefono,
+                })
+            });
+
+            const {msj} = await respuesta.json();
+
+            Alert.alert('Aviso' , msj);
+
+            setNombre('');
+            setApellido('');
+            setCorreo('');
+            setPassword('');
+            setTelefono('');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     return(
         <ScrollView style={styles.scrollView}>
@@ -35,26 +82,34 @@ const EditarUsuario = () => {
                         <View style={styles.contenedorDato}>
                             <View>
                                 <Text style = {styles.label}>Nombre</Text>
-                                <Text style = {styles.dato}>Suany</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={nombre}
+                                    onChangeText={text => setNombre(text)}
+                                />
                             </View>
                             <View>
                                 <Button
                                     title="Editar"
                                     color={'#000'}
-                                    onPress={() => Alert.alert('Simple Button pressed')}
+                                    onPress={handleUpdate}
                                 />
                             </View>
                         </View>
                         <View style={styles.contenedorDato}>
                             <View>
                                 <Text style = {styles.label}>Apellido</Text>
-                                <Text style = {styles.dato}>Garcia</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={apellido}
+                                    onChangeText={text => setApellido(text)}
+                                />
                             </View>
                             <View>
                                 <Button
                                     title="Editar"
                                     color={'#000'}
-                                    onPress={() => Alert.alert('Simple Button pressed')}
+                                    onPress={handleUpdate}
                                 />
                             </View>
                         </View>
@@ -66,40 +121,52 @@ const EditarUsuario = () => {
                                         source={bandera}
                                         style = {styles.imagen}
                                     />
-                                    <Text style = {styles.dato}>+504 9336-9363</Text>
+                                    <TextInput
+                                        style={styles.input}
+                                        value={telefono}
+                                        onChangeText={text => setTelefono(text)}
+                                    />
                                 </View>
                             </View>
                             <View>
                                 <Button
                                     title="Editar"
                                     color={'#000'}
-                                    onPress={() => Alert.alert('Simple Button pressed')}
+                                    onPress={handleUpdate}
                                 />
                             </View>
                         </View>
                         <View style={styles.contenedorDato}>
                             <View>
                                 <Text style = {styles.label}>Correo Electronico</Text>
-                                <Text style = {styles.dato}>suanygarcia174@gmail.com</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={correo}
+                                    onChangeText={text => setCorreo(text)}
+                                />
                             </View>
                             <View>
                                 <Button
                                     title="Editar"
                                     color={'#000'}
-                                    onPress={() => Alert.alert('Simple Button pressed')}
+                                    onPress={handleUpdate}
                                 />
                             </View>
                         </View>
                         <View style={styles.contenedorDato}>
                             <View>
                                 <Text style = {styles.label}>Contraseña</Text>
-                                <Text style = {styles.dato}>**********</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={password}
+                                    onChangeText={text => setPassword(text)}
+                                />
                             </View>
                             <View>
                                 <Button
                                     title="Editar"
                                     color={'#000'}
-                                    onPress={() => Alert.alert('Simple Button pressed')}
+                                    onPress={ handleUpdate}
                                 />
                             </View>
                         </View>
@@ -217,7 +284,12 @@ const styles = StyleSheet.create({
         padding:10,
         backgroundColor:'#000',
         width:'100%',
-    }
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        padding: 10,
+      },
 })
 
 
