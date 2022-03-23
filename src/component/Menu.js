@@ -7,6 +7,7 @@ import Login from './Login';
 import Perfil from './Perfil';
 import RecuContra from './RecuContra';
 import SignUp from './SignUp';
+import Viajes from './Viajes';
 
 const Stack = createNativeStackNavigator();
 export default function Menu() {
@@ -18,6 +19,7 @@ export default function Menu() {
                 <Stack.Screen name="Perfil" component={Perfil}></Stack.Screen>
                 <Stack.Screen name="RecuContra" component={RecuContra}></Stack.Screen>
                 <Stack.Screen name="SignUp" component={SignUp}></Stack.Screen>
+                <Stack.Screen name="Viajes" component={Viajes}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 
