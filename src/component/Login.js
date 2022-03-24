@@ -4,20 +4,24 @@ import { StyleSheet, Text, View , Button, TextInput , Image , ImageBackground , 
 import imagenLogo from '../../assets/uber.png';
 import imagenFondo from '../../assets/fondo.jpg';
 
-const Login = () => {
+const Login = ({navigation}) => {
 
-    const [correo , setCorreo] = useState('');
-    const [password , setPassword] = useState('');
-    
-
-    const handleLogIn = async () => {
+  const [correo , setCorreo] = useState('');
+  const [password , setPassword] = useState('');
   
+
+  const handleLogIn = async () => {
+
     if([correo , password].includes('')) {
-      Alert.alert('Error' ,'Datos incorrectos');
+      Alert.alert('Error' ,'Ingresa tus credenciales para continuar');
       return;
     } 
 
+<<<<<<< HEAD
     const url ='http://192.168.0.3:4000/uber/api/autenticacion/inicio-sesion/';
+=======
+    const url ='http://192.168.1.3:4000/uber/api/autenticacion/inicio-sesion/';
+>>>>>>> 0aa2c73795edab1aef3193f4df3e26e204327904
 
     try {
       
@@ -46,98 +50,93 @@ const Login = () => {
 
         Alert.alert('Inicio de sesion exitoso' , `Bienvenido de nuevo ${nombre} ${apellido} `);
         console.log(resultado.data.token);
+        navigation.navigate('Inicio');
       }
 
     } catch (error) {
       console.log(error);
       Alert.alert('Error!', 'Hubo un problema con la conexion');
     }
+
+  }
+
+
+  return (
       
+    <ImageBackground source={imagenFondo} style={styles.container}>
 
-    
-    
+      <View style={styles.imagenCaja}>
+        <Image 
+          source={imagenLogo}
+          style={styles.imagen}
+        />
+      </View>
 
-    }
+      <View style = {[styles.contenedorLogin, styles.sombras]} >
 
-    const handleSignUp = () => {
-        Alert.alert('Nueva cuenta', 'Vas a crear una nueva cuenta');
-    }
-
-    return (
-        
-        <ImageBackground source={imagenFondo} style={styles.container}>
-
-        <View style={styles.imagenCaja}>
-          <Image 
-            source={imagenLogo}
-            style={styles.imagen}
-          />
-        </View>
-
-        <View style = {[styles.contenedorLogin, styles.sombras]} >
-
-          <View style= {styles.campo} >
-            <Text style= {styles.label} > Correo o Teléfono: </Text>
-            <TextInput
-              onChangeText={ text => setCorreo(text) }
-              value={correo}
-              style = {styles.input}
-              placeholder='Ingrese su correo o teléfono'
-              keyboardType='email-address'
-              >
-              
-            </TextInput>
-          </View>
-
-          <View style= {styles.campo} >
-            <Text style= {styles.label} > Contraseña: </Text>
-            <TextInput
-              onChangeText={ text => setPassword(text) }
-              value={password}
-              style = {styles.input}
-              secureTextEntry= {true}
-              placeholder='Ingrese su contraseña'
-              >
-              
-            </TextInput>
-          </View>
-
-          <View style={styles.botones}>
-
-            <View style={styles.login}>
-              <Button 
-                title='Ingresar' 
-                onPress={ handleLogIn }
-              />
-
-            <Text 
-              onPress={ () => Alert.alert('password','Nueva pantalla para password')} 
-              style={styles.nuevaContrasena}>Olvidé mi constraseña.
-            </Text>
-
-            </View>
-
-            <View  style={styles.signup}>
-              <Text 
-                style={{marginBottom: 12}}>¿Aún no tienes una cuenta? 
-                <Text style={{fontWeight: '700'}} >Comienza creando una</Text> 
-              </Text>
-              <Button 
-                onPress={ handleSignUp }
-                color="#000" 
-                title='Crear Cuenta' />
-            </View>
+        <View style= {styles.campo} >
+          <Text style= {styles.label} > Correo o Teléfono: </Text>
+          <TextInput
+            onChangeText={ text => setCorreo(text) }
+            value={correo}
+            style = {styles.input}
+            placeholder='Ingrese su correo o teléfono'
+            keyboardType='email-address'
+            >
             
+          </TextInput>
+        </View>
+
+        <View style= {styles.campo} >
+          <Text style= {styles.label} > Contraseña: </Text>
+          <TextInput
+            onChangeText={ text => setPassword(text) }
+            value={password}
+            style = {styles.input}
+            secureTextEntry= {true}
+            placeholder='Ingrese su contraseña'
+            >
+            
+          </TextInput>
+        </View>
+
+        <View style={styles.botones}>
+
+          <View style={styles.login}>
+            <Button 
+              title='Ingresar' 
+              onPress={ handleLogIn }
+            />
+
+          <Text 
+            onPress={() => navigation.navigate('RecuContra')}
+            style={styles.nuevaContrasena}>Olvidé mi constraseña.
+          </Text>
+
           </View>
 
-
+          <View  style={styles.signup}>
+            <Text 
+              style={{marginBottom: 12}}>¿Aún no tienes una cuenta? 
+              <Text style={{fontWeight: '700'}}>Comienza creando una
+              </Text> 
+            </Text>
+            <Button 
+              onPress={() => navigation.navigate('SignUp')}
+              color="#000" 
+              title='Crear Cuenta' />
+          </View>
+          
         </View>
+
+
+      </View>
 
 
     </ImageBackground>
-  
 
-    )
+
+  )
 }
 
 
