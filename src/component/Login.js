@@ -49,6 +49,8 @@ const Login = ({navigation}) => {
         
         //const datosdelStorage = await AsyncStorage.getItem('usuarioAutenticado');
         navigation.navigate('Inicio');
+        setCorreo('');
+        setPassword('');
       }
 
     } catch (error) {

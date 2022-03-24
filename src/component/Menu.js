@@ -8,6 +8,7 @@ import Perfil from './Perfil';
 import RecuContra from './RecuContra';
 import SignUp from './SignUp';
 import Viajes from './Viajes';
+import EditarUsuario from './EditarUsuario';
 
 const Stack = createNativeStackNavigator();
 export default function Menu() {
@@ -21,6 +22,7 @@ export default function Menu() {
                 <Stack.Screen options={{headerShown: false}} name="RecuContra" component={RecuContra}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="SignUp" component={SignUp}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Viajes" component={Viajes}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="Editar" component={EditarUsuario}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 
