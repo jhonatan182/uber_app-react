@@ -3,7 +3,8 @@ import imagenUsuario from '../../assets/default-user.jpg';
 import { StyleSheet, Text, View , Button , Image } from 'react-native';
 
 
-const Perfil = () =>{
+
+const Perfil = ({navigation}) =>{
     return (
         <View style={styles.container}>
       <View style={styles.contenedorHeader}>
@@ -17,7 +18,7 @@ const Perfil = () =>{
         </View>
         <View style={styles.ContenedorExtras}>
           <View style={styles.extras}>
-            <Text style={styles.textExtra}>Mis Viajes</Text>
+            <Text style={styles.textExtra} onPress={()=>navigation.navigate('Viajes')}>Mis Viajes</Text>
           </View>
           <View style={styles.extras}>
             <Text style={styles.textExtra}>Cerrar Sesión</Text>
