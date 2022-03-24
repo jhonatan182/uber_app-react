@@ -2,7 +2,7 @@ import { useState} from 'react';
 import React from 'react';
 import { StyleSheet, Text, View , Button, TextInput , Image , ImageBackground , Alert} from 'react-native';
 
-export default function recuContra () {
+export default function RecuContra () {
 
     const [correo , setCorreo] = useState('');
 
@@ -14,7 +14,7 @@ export default function recuContra () {
         }
 
         try {
-            const url ='http://192.168.1.248:4000/uber/api/autenticacion/recuperar-contrasena';
+            const url ='http://192.168.0.12:4000/uber/api/autenticacion/recuperar-contrasena';
 
             const respuesta = await fetch(url ,{
                 method: 'POST',
