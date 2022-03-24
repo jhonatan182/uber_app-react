@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
         height: 40,
         margin: 12,
         padding: 10,
+        borderWidth: 1,
       },
 })
 
