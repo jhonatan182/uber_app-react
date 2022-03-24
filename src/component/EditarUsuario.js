@@ -1,15 +1,37 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 import { StyleSheet, Text, View, Button, Alert, StatusBar, Image,TouchableOpacity,ScrollView, TextInput } from 'react-native';
 import icono from '../../assets/userIcono.png'
 import lapiz from '../../assets/pencil.png'
 import bandera from '../../assets/hn.png'
 import google from '../../assets/google.png'
 import facebook from '../../assets/facebook.png'
-import { useState } from "react";
-import { useFocusEffect } from "@react-navigation/core";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditarUsuario = () => {
+
+    const [Usuarios, setUsuarios] = useState([]);
+
+    useEffect(()=>{
+      const obtenerUser= async()=>{
+      let user= await AsyncStorage.getItem("usuarioAutenticado") 
+      user= await JSON.parse(user)
+      const {id} = user.usuario
+        
+      try {
+        const url = `http://192.168.0.3:4000/uber/api/usuario/conductores?id=${id}`
+        const respuesta = await fetch(url)
+        const resultado = await respuesta.json();
+        setUsuarios(resultado)
+        console.log(Usuarios)
+        
+      } catch (error) {
+        console.log(error)
+      }
+  
+      }
+      obtenerUser();
+    },[])
+    
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [correo, setCorreo] = useState('');
@@ -21,12 +43,12 @@ const EditarUsuario = () => {
             Alert.alert('Error' , 'No puedes dejar el campo vacio');
             return;
           }
-
-        const url = 'http://192.168.0.3:4000/uber/api/conductor/modificar?id=${id}';
+        
+        const url = `http://192.168.0.3:4000/uber/api/conductor/modificar?id=${id}`
 
         try {
             const respuesta = await fetch(url, {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
@@ -53,16 +75,6 @@ const EditarUsuario = () => {
             console.log(error);
         }
     }
-
-    const [Usuario, setUsuario] = useState([]);
-
-    useFocusEffect(() =>{
-        const obtenerUser =async() =>{
-            let user = await AsyncStorage.getItem("usuarioAutenticado")
-            user = await JSON.parse(user)
-            const {id} = user.usuario
-        }
-    })
 
 
     return(
@@ -94,11 +106,14 @@ const EditarUsuario = () => {
                         <View style={styles.contenedorDato}>
                             <View>
                                 <Text style = {styles.label}>Nombre</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={nombre}
-                                    onChangeText={text => setNombre(text)}
-                                />
+                                {Usuarios.map(usuario=>(
+                                    <TextInput
+                                        style={styles.input}
+                                        value={nombre}
+                                        onChangeText={text => setNombre(text)}
+                                    />
+                                ))}
+                                
                             </View>
                             <View>
                                 <Button
@@ -182,44 +197,6 @@ const EditarUsuario = () => {
                                 />
                             </View>
                         </View>
-                        <View style={styles.contenedorDato}>
-                            <View>
-                                <Text style = {styles.label}>Conectar con:</Text>
-                                <View style ={styles.imagenDato}>
-                                    <Image 
-                                        source={google}
-                                        style = {styles.imagen}
-                                    />
-                                    <Text style = {styles.dato}>Google</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <Button
-                                    title="Conectar"
-                                    color={'#000'}
-                                    onPress={() => Alert.alert('Simple Button pressed')}
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.contenedorDato}>
-                            <View>
-                                <Text style = {styles.label}>Conectar con:</Text>
-                                <View style ={styles.imagenDato}>
-                                    <Image 
-                                        source={facebook}
-                                        style = {styles.imagen}
-                                    />
-                                    <Text style = {styles.dato}>Facebook</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <Button
-                                    title="Conectar"
-                                    color={'#000'}
-                                    onPress={() => Alert.alert('Simple Button pressed')}
-                                />
-                            </View>
-                        </View>
                     </View>
             </View>
                 <View style = {styles.footer}>
@@ -298,6 +275,7 @@ const styles = StyleSheet.create({
         width:'100%',
     },
     input: {
+        width: 50,
         height: 40,
         margin: 12,
         padding: 10,

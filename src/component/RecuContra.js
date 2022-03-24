@@ -14,7 +14,7 @@ export default function recuContra () {
         }
 
         try {
-            const url ='http://192.168.0.13:4000/uber/api/autenticacion/recuperar-contrasena';
+            const url ='http://192.168.0.3:4000/uber/api/autenticacion/recuperar-contrasena';
 
             const respuesta = await fetch(url ,{
                 method: 'POST',
