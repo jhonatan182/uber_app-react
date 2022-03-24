@@ -13,7 +13,7 @@ const Viajes = () =>{
     const {id} = user.usuario
       
     try {
-      const url = `http://192.168.1.248:4000/uber/api/usuario/viajes/listarViaje?pasajeroId=${id}`
+      const url = `http://192.168.0.12:4000/uber/api/usuario/viajes/listarViaje?pasajeroId=${id}`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
       setViajes(resultado)
@@ -39,21 +39,19 @@ const Viajes = () =>{
       </View>
       </View>
       <View style={styles.container2}>
-        <ScrollView>
-        {Viajes.map(viaje=>(
-           <SectionList style = {{borderBottomWidth:5,marginTop:5,marginBottom:20}}
-           sections={[
-             {title: 'Direccion Inicial', data: [viaje.direccionInicial]},
-             {title: 'Destino Final', data: [viaje.destinoFinal]},
-             {title: 'Distancia', data: [viaje.distancia]},
-             {title: 'Fecha y Hora', data: [viaje.fechaHora]},
-           ]}
+      <ScrollView>
+           <SectionList  style = {{borderBottomWidth:5,marginTop:5,marginBottom:20}}
+           sections={ Viajes.map(viaje => (
+            {title: 'Direccion Inicial', data: [viaje.direccionInicial]},
+            {title: 'Destino Final', data: [viaje.destinoFinal]},
+            {title: 'Distancia en Km', data: [viaje.distancia] },
+            {title: 'Fecha y Hora', data: [viaje.fechaHora]}
+           )) }
            renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
            renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
            keyExtractor={(item, index) => index}
          />
-        ))}
-        </ScrollView>
+       </ScrollView> 
       </View>
       <View style = {styles.footer}>
        <Text style ={styles.textoBlanco}>Gracias por usar UBER</Text>

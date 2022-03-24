@@ -1,8 +1,15 @@
 //import { useState } from 'react';
 import imagenUsuario from '../../assets/default-user.jpg';
 import { StyleSheet, Text, View , Button , Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+const handleCerrarSesion =  async (navigation) => {
+
+  await AsyncStorage.removeItem('usuarioAutenticado');
+  navigation.navigate('Login');
+
+}
 
 const Perfil = ({navigation}) =>{
     return (
@@ -14,14 +21,14 @@ const Perfil = ({navigation}) =>{
         <View style={styles.contenedorImagen}>
         <Image source={imagenUsuario} style={styles.imagen}/>
         <Text style={styles.textUsuario}>Nombre Usuario</Text>
-        <Button title="Modificar Perfil" color="#828282"></Button>
+        <Button onPress={() => navigation.navigate('Editar')} title="Modificar Perfil" color="#828282"></Button>
         </View>
         <View style={styles.ContenedorExtras}>
           <View style={styles.extras}>
             <Text style={styles.textExtra} onPress={()=>navigation.navigate('Viajes')}>Mis Viajes</Text>
           </View>
           <View style={styles.extras}>
-            <Text style={styles.textExtra}>Cerrar Sesión</Text>
+            <Text onPress={() => handleCerrarSesion(navigation)} style={styles.textExtra} >Cerrar Sesión</Text>
           </View>
         </View>
       </View>
