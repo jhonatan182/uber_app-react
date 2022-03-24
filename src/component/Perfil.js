@@ -3,7 +3,7 @@ import imagenUsuario from '../../assets/default-user.jpg';
 import { StyleSheet, Text, View , Button , Image } from 'react-native';
 
 
-const Perfil = () =>{
+const Perfil = ({navigation}) =>{
     return (
         <View style={styles.container}>
       <View style={styles.contenedorHeader}>
@@ -13,7 +13,7 @@ const Perfil = () =>{
         <View style={styles.contenedorImagen}>
         <Image source={imagenUsuario} style={styles.imagen}/>
         <Text style={styles.textUsuario}>Nombre Usuario</Text>
-        <Button title="Modificar Perfil" color="#828282"></Button>
+        <Button title="Modificar Perfil" color="#828282" onPress={()=>navigation.navigate('EditarUsuario')}></Button>
         </View>
         <View style={styles.ContenedorExtras}>
           <View style={styles.extras}>

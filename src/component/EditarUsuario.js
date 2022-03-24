@@ -6,6 +6,8 @@ import bandera from '../../assets/hn.png'
 import google from '../../assets/google.png'
 import facebook from '../../assets/facebook.png'
 import { useState } from "react";
+import { useFocusEffect } from "@react-navigation/core";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditarUsuario = () => {
     const [nombre, setNombre] = useState('');
@@ -20,7 +22,7 @@ const EditarUsuario = () => {
             return;
           }
 
-        const url = 'http://192.168.0.3:4000/uber/api/conductor/modificar';
+        const url = 'http://192.168.0.3:4000/uber/api/conductor/modificar?id=${id}';
 
         try {
             const respuesta = await fetch(url, {
@@ -51,6 +53,16 @@ const EditarUsuario = () => {
             console.log(error);
         }
     }
+
+    const [Usuario, setUsuario] = useState([]);
+
+    useFocusEffect(() =>{
+        const obtenerUser =async() =>{
+            let user = await AsyncStorage.getItem("usuarioAutenticado")
+            user = await JSON.parse(user)
+            const {id} = user.usuario
+        }
+    })
 
 
     return(
