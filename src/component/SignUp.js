@@ -51,7 +51,7 @@ const SignUp = ({navigation}) => {
 
   const handleSubmit =  async () => {
 
-    if([nombre, apellido, correo , password ,telefono, tipoUsuario].includes('')) {
+    if([nombre, apellido, correo , password ,telefono].includes('')) {
       Alert.alert('Error' , 'Todos los campos son obligatorios');
       return;
     }
@@ -74,7 +74,7 @@ const SignUp = ({navigation}) => {
           password,
           telefono,
           foto: 'perfil.png',
-          tipoUsuario
+          tipoUsuario:2
         })
       });
 
@@ -171,10 +171,10 @@ const SignUp = ({navigation}) => {
             </TextInput>
           </View>
 
-          <View style= {styles.campo}>
+{/*           <View style= {styles.campo}>
             <Text style= {styles.label} >¿Qué rol quieres tener en Uber?</Text>
             <SelectConductores />
-          </View>
+          </View> */}
 
         </ScrollView> 
 
