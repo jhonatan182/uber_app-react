@@ -13,7 +13,6 @@ const EditarUsuario = () => {
     const [apellido, setApellido] = useState('');
     const [correo, setCorreo] = useState('');
     const [telefono, setTelefono] =  useState('');
-    const [password, setPassword] = useState('');
     const [nombreTitulo , setNombreTitulo] = useState('');
 
     useEffect(() => {
@@ -25,17 +24,17 @@ const EditarUsuario = () => {
         const {id} = user.usuario;
         
         try {
-            const url = `http://192.168.0.12:4000/uber/api/usuario/conductores?id=${id}`
+            const url = `http://192.168.0.12:4000/uber/api/usuario/obtenerPorId?id=${id}`
             const respuesta = await fetch(url)
             const resultado = await respuesta.json();
             
-            console.log(resultado.data[0])
+            // console.log(resultado.data)
 
-            setNombre(resultado.data[0].nombre);
-            setNombreTitulo(resultado.data[0].nombre + ' ' + resultado.data[0].apellido);
-            setApellido(resultado.data[0].apellido);
-            setTelefono(resultado.data[0].telefono);
-            setCorreo(resultado.data[0].correo);
+            setNombre(resultado.data.nombre);
+            setNombreTitulo(resultado.data.nombre + ' ' + resultado.data.apellido);
+            setApellido(resultado.data.apellido);
+            setTelefono(resultado.data.telefono);
+            setCorreo(resultado.data.correo);
             
 
         
@@ -81,7 +80,6 @@ const EditarUsuario = () => {
             setNombre('');
             setApellido('');
             setCorreo('');
-            setPassword('');
             setTelefono('');
         } catch (error) {
             console.log(error);
@@ -191,24 +189,6 @@ const EditarUsuario = () => {
                                     title="Editar"
                                     color={'#000'}
                                     onPress={handleUpdate}
-                                />
-                            </View>
-                        </View>
-                        <View style={styles.contenedorDato}>
-                            <View>
-                                <Text style = {styles.label}>Contraseña</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={password}
-                                    secureTextEntry={true}
-                                    onChangeText={text => setPassword(text)}
-                                />
-                            </View>
-                            <View>
-                                <Button
-                                    title="Editar"
-                                    color={'#000'}
-                                    onPress={ handleUpdate}
                                 />
                             </View>
                         </View>

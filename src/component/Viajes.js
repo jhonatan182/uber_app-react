@@ -39,19 +39,23 @@ const Viajes = () =>{
       </View>
       </View>
       <View style={styles.container2}>
-      <ScrollView>
-           <SectionList  style = {{borderBottomWidth:5,marginTop:5,marginBottom:20}}
-           sections={ Viajes.map(viaje => (
-            {title: 'Direccion Inicial', data: [viaje.direccionInicial]},
-            {title: 'Destino Final', data: [viaje.destinoFinal]},
-            {title: 'Distancia en Km', data: [viaje.distancia] },
-            {title: 'Fecha y Hora', data: [viaje.fechaHora]}
-           )) }
+      <ScrollView >
+        {Viajes.map(viaje=>(
+           <SectionList style = {{borderBottomWidth:5,marginTop:5,marginBottom:20}}
+           sections={[
+             {title: 'Direccion Inicial: ', data: [viaje.direccionInicial]},
+             {title: 'Destino Final: ', data: [viaje.destinoFinal]},
+             {title: 'Distancia en Km: ', data: [viaje.distancia] },
+             {title: 'Fecha y Hora: ', data: [viaje.fechaHora]},
+             {title: 'Precio Viaje: ', data: ['L ' + viaje.total  ]}
+           ]}
            renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
            renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
            keyExtractor={(item, index) => index}
+           key={viaje.id}
          />
-       </ScrollView> 
+        ))}
+        </ScrollView>
       </View>
       <View style = {styles.footer}>
        <Text style ={styles.textoBlanco}>Gracias por usar UBER</Text>

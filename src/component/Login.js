@@ -43,14 +43,29 @@ const Login = ({navigation}) => {
         
 
         const usuarioAutenticado = resultado.data;
+
         await AsyncStorage.setItem('usuarioAutenticado', JSON.stringify(usuarioAutenticado));
 
         Alert.alert('Inicio de sesion exitoso' , `Bienvenido de nuevo ${nombre} ${apellido} `);
         
-        //const datosdelStorage = await AsyncStorage.getItem('usuarioAutenticado');
-        navigation.navigate('Inicio');
         setCorreo('');
         setPassword('');
+
+        /* de acuerdo al tipo de usuario se va mostrar x pantalla */
+
+        // conductor
+        if(usuarioAutenticado.usuario.tipoUsuario === 1) {
+          Alert.alert('construir' , 'debes de construir la pantalla de conductor')
+
+          //pasajero
+        } else if(usuarioAutenticado.usuario.tipoUsuario === 2) {
+          navigation.navigate('Inicio');
+
+          //admin
+        } else {
+          navigation.navigate('Admin');
+        }
+
       }
 
     } catch (error) {
