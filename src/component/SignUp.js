@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Text, Button , TextInput , View  , StyleSheet , ScrollView , Alert} from 'react-native';
 import usePickerUbicaciones from '../hooks/usePickerUbicaciones';
+import RNPickerSelect from 'react-native-picker-select';
 
 const SignUp = ({navigation}) => {
 
@@ -9,49 +10,12 @@ const SignUp = ({navigation}) => {
   const [correo , setCorreo] = useState('');
   const [password , setPassword] = useState('');
   const [telefono , setTelefono] = useState('');
-  const [tipoUsuarios , setTipoUsuarios] = useState([]);
-
-  const [ tipoUsuario , SelectConductores ] = usePickerUbicaciones('Elige tu rol' , tipoUsuarios);
-
-  useEffect(() => {
-
-    const consultarConductoresAPI = async () => {
-
-      try {
-      
-        const url = 'http://192.168.0.5:4000/uber/api/tipou/listartipu';
-        const respuesta = await fetch(url);
-        const resultado = await respuesta.json();
-        
-        const arrayRoles = resultado.map( rol => {
-
-          const objeto = {
-              label: rol.tipo , 
-              value: rol.id , 
-              key: rol.id
-          }
-
-          return objeto;
-
-      });
-
-      setTipoUsuarios(arrayRoles);
-  
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    consultarConductoresAPI();
-
-
-  },[])
-
-
+  const [tipoUsuario , setTipoUsuario] = useState('');
 
   const handleSubmit =  async () => {
 
-    if([nombre, apellido, correo , password ,telefono].includes('')) {
+
+    if([nombre, apellido, correo , password ,telefono , tipoUsuario].includes('')) {
       Alert.alert('Error' , 'Todos los campos son obligatorios');
       return;
     }
@@ -74,7 +38,7 @@ const SignUp = ({navigation}) => {
           password,
           telefono,
           foto: 'perfil.png',
-          tipoUsuario:2
+          tipoUsuario
         })
       });
 
@@ -89,8 +53,15 @@ const SignUp = ({navigation}) => {
         setCorreo('');
         setPassword('');
         setTelefono('');
-  
-        navigation.navigate('Inicio');
+
+
+        /* asignar pantalla si eligió conductir */
+        if(tipoUsuario === 1) {
+          Alert.alert('contruir' , 'pantalla donde el conductor va ingregar datos de su vehiculo y luego de eso si va mandar a la pnatalla inicio para para conductor');
+        } else {
+          navigation.navigate('Inicio');
+        }
+
 
       } else {
         Alert.alert('Aviso' , msj);
@@ -171,10 +142,24 @@ const SignUp = ({navigation}) => {
             </TextInput>
           </View>
 
-{/*           <View style= {styles.campo}>
+          <View style= {styles.campo}>
             <Text style= {styles.label} >¿Qué rol quieres tener en Uber?</Text>
-            <SelectConductores />
-          </View> */}
+
+            <RNPickerSelect
+              placeholder = {{
+                  label: 'Elige tu rol',
+                  value: null,
+                  color: '#3b3b3b',}
+              }
+              style={pickerSelectStyles}
+              value ={tipoUsuario}
+              onValueChange={ value => ( setTipoUsuario(value)) }
+              items={[
+                {key: 2 , label: 'Pasajero' , value: 2},
+                {key: 1 , label: 'Conductor' , value: 1},
+              ]}
+            />
+          </View> 
 
         </ScrollView> 
 
