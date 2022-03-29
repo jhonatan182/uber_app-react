@@ -9,42 +9,54 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const EditarUsuario = () => {
 
-    const [Usuarios, setUsuarios] = useState([]);
-
-    useEffect(()=>{
-      const obtenerUser= async()=>{
-      let user= await AsyncStorage.getItem("usuarioAutenticado") 
-      user= await JSON.parse(user)
-      const {id} = user.usuario
-        
-      try {
-        const url = `http://192.168.0.3:4000/uber/api/usuario/conductores?id=${id}`
-        const respuesta = await fetch(url)
-        const resultado = await respuesta.json();
-        setUsuarios(resultado)
-        console.log(Usuarios)
-        
-      } catch (error) {
-        console.log(error)
-      }
-  
-      }
-      obtenerUser();
-    },[])
-    
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [correo, setCorreo] = useState('');
     const [telefono, setTelefono] =  useState('');
-    const [password, setPassword] = useState('');
+    const [nombreTitulo , setNombreTitulo] = useState('');
+
+    useEffect(() => {
+        const obtenerUser= async () => {
+
+        
+        let user = await AsyncStorage.getItem("usuarioAutenticado") 
+        user = await JSON.parse(user)
+        const {id} = user.usuario;
+        
+        try {
+            const url = `http://192.168.0.12:4000/uber/api/usuario/obtenerPorId?id=${id}`
+            const respuesta = await fetch(url)
+            const resultado = await respuesta.json();
+            
+            // console.log(resultado.data)
+
+            setNombre(resultado.data.nombre);
+            setNombreTitulo(resultado.data.nombre + ' ' + resultado.data.apellido);
+            setApellido(resultado.data.apellido);
+            setTelefono(resultado.data.telefono);
+            setCorreo(resultado.data.correo);
+            
+
+        
+        } catch (error) {
+            
+            console.log(error)
+        }
+
+        }
+
+        obtenerUser();
+
+    },[])
+    
 
     const handleUpdate = async () => {
-        if([nombre, apellido, correo , password ,telefono].includes('')) {
+        if([nombre, apellido, correo ,telefono].includes('')) {
             Alert.alert('Error' , 'No puedes dejar el campo vacio');
             return;
           }
         
-        const url = `http://192.168.0.3:4000/uber/api/conductor/modificar?id=${id}`
+        const url = `http://192.168.0.12:4000/uber/api/conductor/modificar?id=${id}`
 
         try {
             const respuesta = await fetch(url, {
@@ -57,7 +69,6 @@ const EditarUsuario = () => {
                     nombre,
                     apellido,
                     correo,
-                    password,
                     telefono,
                 })
             });
@@ -69,7 +80,6 @@ const EditarUsuario = () => {
             setNombre('');
             setApellido('');
             setCorreo('');
-            setPassword('');
             setTelefono('');
         } catch (error) {
             console.log(error);
@@ -89,30 +99,32 @@ const EditarUsuario = () => {
                     </View>
                     <View style = {styles.contenedorPerfil}>
                         <View style = {styles.fotoPerfil}>
-                            <Image 
+                            <View>
+                                <Image 
                                     source={icono}
                                     style={styles.icono}
                                 />
-                                <TouchableOpacity
-                                style={styles.botonEditarFoto}
-                                >
-                                <Image 
-                                    source={lapiz}
+                                <TouchableOpacity style={styles.botonEditarFoto} >
+                                    <Image 
+                                        source={lapiz}
                                     style={styles.iconoLapiz}
-                                />
+                                        />
                                 </TouchableOpacity>
-                                <View style = {styles.separador}></View>
+                            </View>
+
+                            <Text style={styles.nombrePerfil} >{`${nombreTitulo}`}</Text>
+
+
                         </View>
+                        <View style = {styles.separador}></View>
                         <View style={styles.contenedorDato}>
                             <View>
                                 <Text style = {styles.label}>Nombre</Text>
-                                {Usuarios.map(usuario=>(
                                     <TextInput
                                         style={styles.input}
                                         value={nombre}
                                         onChangeText={text => setNombre(text)}
                                     />
-                                ))}
                                 
                             </View>
                             <View>
@@ -180,23 +192,6 @@ const EditarUsuario = () => {
                                 />
                             </View>
                         </View>
-                        <View style={styles.contenedorDato}>
-                            <View>
-                                <Text style = {styles.label}>Contraseña</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={password}
-                                    onChangeText={text => setPassword(text)}
-                                />
-                            </View>
-                            <View>
-                                <Button
-                                    title="Editar"
-                                    color={'#000'}
-                                    onPress={ handleUpdate}
-                                />
-                            </View>
-                        </View>
                     </View>
             </View>
                 <View style = {styles.footer}>
@@ -213,6 +208,12 @@ const styles = StyleSheet.create({
         flex:1,
         backgroundColor:'#FFFFFF'
     },
+    fotoPerfil: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around'
+    },  
     titulo:{
         backgroundColor:'#000',
         color:'#fff',
@@ -275,12 +276,17 @@ const styles = StyleSheet.create({
         width:'100%',
     },
     input: {
-        width: 50,
+        width: 200,
         height: 40,
         margin: 12,
         padding: 10,
         borderWidth: 1,
       },
+    nombrePerfil : {
+        fontSize: 20,
+        fontWeight: '700',
+        textTransform: 'uppercase'
+    }
 })
 
 

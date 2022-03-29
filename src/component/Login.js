@@ -17,7 +17,7 @@ const Login = ({navigation}) => {
       return;
     } 
 
-    const url ='http://192.168.0.3:4000/uber/api/autenticacion/inicio-sesion/';
+    const url ='http://192.168.0.12:4000/uber/api/autenticacion/inicio-sesion/';
 
     try {
       
@@ -40,13 +40,32 @@ const Login = ({navigation}) => {
 
       } else {
         const {nombre ,apellido} = resultado.data.usuario;
+        
 
-        const usuarioAutenticado = JSON.stringify (resultado.data);
-        await AsyncStorage.setItem('usuarioAutenticado', usuarioAutenticado);
+        const usuarioAutenticado = resultado.data;
+
+        await AsyncStorage.setItem('usuarioAutenticado', JSON.stringify(usuarioAutenticado));
 
         Alert.alert('Inicio de sesion exitoso' , `Bienvenido de nuevo ${nombre} ${apellido} `);
-        console.log(resultado.data.token);
-        navigation.navigate('Inicio');
+        
+        setCorreo('');
+        setPassword('');
+
+        /* de acuerdo al tipo de usuario se va mostrar x pantalla */
+
+        // conductor
+        if(usuarioAutenticado.usuario.tipoUsuario === 1) {
+          Alert.alert('construir' , 'debes de construir la pantalla de conductor')
+
+          //pasajero
+        } else if(usuarioAutenticado.usuario.tipoUsuario === 2) {
+          navigation.navigate('Inicio');
+
+          //admin
+        } else {
+          navigation.navigate('Admin');
+        }
+
       }
 
     } catch (error) {
@@ -71,12 +90,12 @@ const Login = ({navigation}) => {
       <View style = {[styles.contenedorLogin, styles.sombras]} >
 
         <View style= {styles.campo} >
-          <Text style= {styles.label} > Correo o Teléfono: </Text>
+          <Text style= {styles.label} > Correo: </Text>
           <TextInput
             onChangeText={ text => setCorreo(text) }
             value={correo}
             style = {styles.input}
-            placeholder='Ingrese su correo o teléfono'
+            placeholder='Ingrese su Correo'
             keyboardType='email-address'
             >
             
@@ -106,15 +125,15 @@ const Login = ({navigation}) => {
 
           <Text 
             onPress={() => navigation.navigate('RecuContra')}
-            style={styles.nuevaContrasena}>Olvidé mi constraseña.
+            style={styles.nuevaContrasena}>Olvidé mi contraseña.
           </Text>
 
           </View>
 
           <View  style={styles.signup}>
             <Text 
-              style={{marginBottom: 12}}>¿Aún no tienes una cuenta? 
-              <Text style={{fontWeight: '700'}}>Comienza creando una
+              style={{marginBottom: 12}}>¿Aún no tienes una cuenta?   
+              <Text style={{fontWeight: '700'}}> Comienza creando una
               </Text> 
             </Text>
             <Button 
