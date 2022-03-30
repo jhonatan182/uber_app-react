@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Text, Button , TextInput , View  , StyleSheet , ScrollView , Alert} from 'react-native';
-
+import usePickerUbicaciones from '../hooks/usePickerUbicaciones';
+import RNPickerSelect from 'react-native-picker-select';
 
 const SignUp = ({navigation}) => {
 
@@ -9,15 +10,18 @@ const SignUp = ({navigation}) => {
   const [correo , setCorreo] = useState('');
   const [password , setPassword] = useState('');
   const [telefono , setTelefono] = useState('');
+  const [tipoUsuario , setTipoUsuario] = useState('');
 
   const handleSubmit =  async () => {
 
-    if([nombre, apellido, correo , password ,telefono].includes('')) {
+
+    if([nombre, apellido, correo , password ,telefono , tipoUsuario].includes('')) {
       Alert.alert('Error' , 'Todos los campos son obligatorios');
       return;
     }
 
-    const url ='http://192.168.1.3:4000/uber/api/usuario/guardar';
+
+    const url ='http://192.168.0.12:4000/uber/api/usuario/guardar';
 
     try {
       
@@ -34,28 +38,42 @@ const SignUp = ({navigation}) => {
           password,
           telefono,
           foto: 'perfil.png',
-          tipoUsuario: 1
+          tipoUsuario
         })
       });
 
-      const {msj} = await respuesta.json();
+      const resultado = await respuesta.json();
+      const {msj , data} = resultado;
 
-      Alert.alert('Aviso' , msj);
+      if(data === 200) {
+        Alert.alert('Aviso' , msj);
 
-      setNombre('');
-      setApellido('');
-      setCorreo('');
-      setPassword('');
-      setTelefono('');
+        setNombre('');
+        setApellido('');
+        setCorreo('');
+        setPassword('');
+        setTelefono('');
 
+
+        /* asignar pantalla si eligió conductir */
+        if(tipoUsuario === 1) {
+          Alert.alert('contruir' , 'pantalla donde el conductor va ingregar datos de su vehiculo y luego de eso si va mandar a la pnatalla inicio para para conductor');
+        } else {
+          navigation.navigate('Inicio');
+        }
+
+
+      } else {
+        Alert.alert('Aviso' , msj);
+      }
+
+    
 
     } catch (error) {
       console.log(error);
     }
 
   }
-
-
 
   return (
        
@@ -124,6 +142,25 @@ const SignUp = ({navigation}) => {
             </TextInput>
           </View>
 
+          <View style= {styles.campo}>
+            <Text style= {styles.label} >¿Qué rol quieres tener en Uber?</Text>
+
+            <RNPickerSelect
+              placeholder = {{
+                  label: 'Elige tu rol',
+                  value: null,
+                  color: '#3b3b3b',}
+              }
+              style={pickerSelectStyles}
+              value ={tipoUsuario}
+              onValueChange={ value => ( setTipoUsuario(value)) }
+              items={[
+                {key: 2 , label: 'Pasajero' , value: 2},
+                {key: 1 , label: 'Conductor' , value: 1},
+              ]}
+            />
+          </View> 
+
         </ScrollView> 
 
       </View> 
@@ -150,6 +187,30 @@ const SignUp = ({navigation}) => {
   )
 };
 
+
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: '#3b3b3b',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: '#3b3b3b',
+    borderRadius: 8,
+    color: '#3b3b3b',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -198,7 +259,7 @@ const styles = StyleSheet.create({
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-evenly'
-    },
+    }
     
   });
   
