@@ -10,6 +10,8 @@ import SignUp from './SignUp';
 import Viajes from './Viajes';
 import EditarUsuario from './EditarUsuario';
 import Admin from './Admin';
+import TipoVehiculos from './TipoVehiculos';
+
 
 const Stack = createNativeStackNavigator();
 export default function Menu() {
@@ -25,6 +27,7 @@ export default function Menu() {
                 <Stack.Screen options={{headerShown: false}} name="Viajes" component={Viajes}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Editar" component={EditarUsuario}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Admin" component={Admin}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="TipoVehiculos" component={TipoVehiculos}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 

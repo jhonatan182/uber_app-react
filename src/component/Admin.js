@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text , View , StyleSheet , Alert } from 'react-native';
 
-const Admin = () => {
+const Admin = ({navigation}) => {
   return (
       <>
 
@@ -14,7 +14,7 @@ const Admin = () => {
         <View style={[styles.contenedor , styles.sombra]}>
             <View style={styles.contenedorAcciones}>
                 <Text style={styles.accion} >Ubicaciones</Text>
-                <Text style={styles.accion} >Tipo de Vehículo</Text>
+                <Text onPress={() => navigation.navigate('TipoVehiculos')} style={styles.accion} >Tipo de Vehículo</Text>
                 <Text style={styles.accion} >Pasajeros</Text>
                 <Text style={styles.accion} >Conductores</Text>
             </View>
