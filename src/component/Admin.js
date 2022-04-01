@@ -13,7 +13,7 @@ const Admin = ({navigation}) => {
 
         <View style={[styles.contenedor , styles.sombra]}>
             <View style={styles.contenedorAcciones}>
-                <Text style={styles.accion} >Ubicaciones</Text>
+            <Text onPress={() => navigation.navigate('Ubicaciones')} style={styles.accion} >Ubicaciones</Text>
                 <Text onPress={() => navigation.navigate('TipoVehiculos')} style={styles.accion} >Tipo de Vehículo</Text>
                 <Text style={styles.accion} >Pasajeros</Text>
                 <Text style={styles.accion} >Conductores</Text>
