@@ -21,7 +21,7 @@ const SignUp = ({navigation}) => {
     }
 
 
-    const url ='http://192.168.0.12:4000/uber/api/usuario/guardar';
+    const url ='http://192.168.1.248:4000/uber/api/usuario/guardar';
 
     try {
       

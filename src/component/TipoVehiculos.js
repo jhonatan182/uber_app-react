@@ -13,7 +13,7 @@ const TipoVehiculos = () =>{
     const {id} = user.usuario
       
     try {
-      const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/listar/`
+      const url = `http://192.168.1.248:4000/uber/api/vehiculo/tipo/listar`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
       setTipo(resultado)
@@ -28,7 +28,7 @@ const TipoVehiculos = () =>{
   },[])
 
   
-  const TipoVehiculoss = ({navigation}) => {
+  
   return (
     <View style ={stylesTipe.container}>
     <View style={stylesTipe.contenedorHeader}>
@@ -67,7 +67,6 @@ const TipoVehiculos = () =>{
   )}
 
 
-}
 const stylesTipe = StyleSheet.create({
   container: {
     flex: 1,

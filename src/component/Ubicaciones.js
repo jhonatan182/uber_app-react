@@ -1,22 +1,19 @@
 import React,{useEffect, useState} from "react";
-import { StyleSheet, Text, View, SafeAreaView, FlatList, StatusBar,SectionList, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Button, FlatList, StatusBar,SectionList, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
 const Ubicaciones = () =>{
   const[ Ubicaciones, setUbicaciones] = useState([])
   useEffect(()=>{
-    const obtenerUser= async()=>{
-    let user= await AsyncStorage.getItem("usuarioAutenticado") 
-    user= await JSON.parse(user)
-    const {id} = user.usuario
-      
+    const obtenerUser= async()=>{    
     try {
-      const url = `http://192.168.1.248:4000/uber/api/usuario/ubicaciones`
+      const url = `http://192.168.1.248:4000/uber/api/ubicaciones/`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
-      setUbicaciones(resultado)
+      setUbicaciones(resultado.data)
       console.log(Ubicaciones)
       
     } catch (error) {
@@ -32,28 +29,39 @@ const Ubicaciones = () =>{
   return (
     <View style ={styles.container}>
       <View style={styles.contenedorHeader}>
-        <Text style={styles.TextTitulo}>Mis Ubicaciones</Text>
+        <Text style={styles.TextTitulo}>Ubicaciones</Text>
       </View>
+      
       <View style={styles.contenedorLista}>
       <View style={styles.lista}>
       </View>
       </View>
       <View style={styles.container2}>
+      <Button color={"#0073e6"} title="Guardar Ubicacion"/>
       <ScrollView >
-        {Ubicaciones.map(ubicacion=>(
-           <SectionList style = {{borderBottomWidth:5,marginTop:5,marginBottom:20}}
-           sections={[
-             {title: 'ID: ', data: [ubicacion.id]},
-             {title: 'Nombre: ', data: [ubicacion.nombre]},
+      {Ubicaciones.map(ubicacion=>(
+            <>  
+             <SectionList 
+            sections={[
+              {title: 'ID: ', data: [ubicacion.id]},
+              {title: 'Nombre: ', data: [ubicacion.nombre]},
+            
+            ]}
+            renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+            renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+            keyExtractor={(item, index) => index}
+            key={ubicacion.id}
+          />
+
+          <Button color={"#02a33d"} title="Editar Ubicacion"/>
+          <Button color={"#fc0303"} title="Eliminar Ubicacion"/>
+          </>
+        
            
-           ]}
-           renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
-           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-           keyExtractor={(item, index) => index}
-           key={ubicacion.id}
-         />
+           
         ))}
         </ScrollView>
+        
       </View>
       <View style = {styles.footer}>
        <Text style ={styles.textoBlanco}>Gracias por usar UBER</Text>
@@ -68,7 +76,7 @@ const Ubicaciones = () =>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffff',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     width: "100%",

@@ -41,7 +41,7 @@ const Inicio = ({navigation}) => {
 
             try {
                 
-                const url = 'http://192.168.0.12:4000/uber/api/ubicaciones/';
+                const url = 'http://192.168.1.248:4000/uber/api/ubicaciones/';
                 const respuesta = await fetch(url);
                 const resultado = await respuesta.json();
 
@@ -71,7 +71,7 @@ const Inicio = ({navigation}) => {
         const consultarConductoresAPI = async () => {
 
             try {
-                const urlConductores = 'http://192.168.0.12:4000/uber/api/usuario/conductores';
+                const urlConductores = 'http://192.168.1.248:4000/uber/api/usuario/conductores';
                 const respuestaConductores = await fetch(urlConductores);
                 const resultadoConductores = await respuestaConductores.json();
 
@@ -118,7 +118,7 @@ const Inicio = ({navigation}) => {
         }
                 
         try {
-            const url = 'http://192.168.0.12:4000/uber/api/usuario/viajes/guardarViajes/';
+            const url = 'http://192.168.1.248:4000/uber/api/usuario/viajes/guardarViajes/';
 
             const respuesta = await fetch(url , {
                 method: "POST",
