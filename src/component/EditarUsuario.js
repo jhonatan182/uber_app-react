@@ -6,25 +6,94 @@ import bandera from '../../assets/hn.png'
 import google from '../../assets/google.png'
 import facebook from '../../assets/facebook.png'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from 'expo-image-picker';
 
 const EditarUsuario = () => {
+    
+    const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
+    const [image, setImage] = useState(null);
+    useEffect(() => {(async () => {
+        const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        setHasGalleryPermission(galleryStatus.status === 'granted');
+    })();
+    }, []);
+
+    const pickImage = async () => {
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 1,
+        });
+
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+
+        console.log(image);
+
+        guardarArchivo();
+        
+    };
+
+    const guardarArchivo = async ()=>{
+
+        let user = await AsyncStorage.getItem("usuarioAutenticado") 
+        user = await JSON.parse(user)
+        const {id} = user.usuario;
+        let token = user.token
+        console.log(token);
+
+        let data = new FormData()
+        data.append('img',{
+            uri:image,
+            type:'jpeg',
+            name:'null'
+        })
+        try {
+
+        const url =`http://192.168.137.1:4000/uber/api/archivos/img/?id=${filename}`;   
+
+        const respuesta = await fetch(url , {
+            method: 'POST',
+            headers: {
+              Accept : 'multipart/form-data',
+              'Content-Type' : 'multipart/form-data',
+              "Authorization" : `Bearer ${token}`
+            } ,
+            body:data
+          });
+        // const resultado = await respuesta.json();
+
+        } catch (error) {
+
+          console.log(error);  
+          
+        }
+    }
+    
+
+    if (hasGalleryPermission === false) {
+        return <Text>No access to Gallery</Text>;
+    }
 
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [correo, setCorreo] = useState('');
     const [telefono, setTelefono] =  useState('');
     const [nombreTitulo , setNombreTitulo] = useState('');
-
     useEffect(() => {
+
         const obtenerUser= async () => {
 
         
         let user = await AsyncStorage.getItem("usuarioAutenticado") 
         user = await JSON.parse(user)
         const {id} = user.usuario;
-        
         try {
-            const url = `http://192.168.1.3:4000/uber/api/usuario/obtenerPorId?id=${id}`
+            const url = `http://192.168.137.1:4000/uber/api/usuario/obtenerPorId?id=${id}`
+
             const respuesta = await fetch(url)
             const resultado = await respuesta.json();
             
@@ -46,7 +115,6 @@ const EditarUsuario = () => {
         }
 
         obtenerUser();
-
     },[])
     
 
@@ -56,8 +124,7 @@ const EditarUsuario = () => {
             return;
           }
         
-
-        const url = `http://192.168.1.248:4000/uber/api/conductor/modificar?id=${id}`
+        const url = `http://192.168.137.1:4000/uber/api/conductor/modificar?id=${id}`
 
 
         try {
@@ -88,7 +155,6 @@ const EditarUsuario = () => {
         }
     }
 
-
     return(
         <ScrollView style={styles.scrollView}>
             <View style = {styles.container}>
@@ -103,13 +169,13 @@ const EditarUsuario = () => {
                         <View style = {styles.fotoPerfil}>
                             <View>
                                 <Image 
-                                    source={icono}
+                                    source={{uri:image}}
                                     style={styles.icono}
                                 />
-                                <TouchableOpacity style={styles.botonEditarFoto} >
+                                <TouchableOpacity style={styles.botonEditarFoto} onPress ={()=>pickImage()} >
                                     <Image 
                                         source={lapiz}
-                                    style={styles.iconoLapiz}
+                                        style={styles.iconoLapiz}
                                         />
                                 </TouchableOpacity>
                             </View>
