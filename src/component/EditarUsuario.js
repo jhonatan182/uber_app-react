@@ -78,22 +78,26 @@ const EditarUsuario = () => {
         return <Text>No access to Gallery</Text>;
     }
 
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
-    const [correo, setCorreo] = useState('');
-    const [telefono, setTelefono] =  useState('');
-    const [nombreTitulo , setNombreTitulo] = useState('');
+    const [nombre, setNombre] = useState([]);
+    const [apellido, setApellido] = useState([]);
+    const [correo, setCorreo] = useState([]);
+    const [telefono, setTelefono] =  useState([]);
+    const [nombreTitulo , setNombreTitulo] = useState([]);
+
     useEffect(() => {
 
         const obtenerUser= async () => {
 
         
-        let user = await AsyncStorage.getItem("usuarioAutenticado") 
-        user = await JSON.parse(user)
-        const {id} = user.usuario;
-        try {
-            const url = `http://192.168.137.1:4000/uber/api/usuario/obtenerPorId?id=${id}`
+            let user = await AsyncStorage.getItem("usuarioAutenticado")
+            user = await JSON.parse(user)
+            const { id } = user.usuario;
 
+
+
+        try {
+
+            const url = `https://localhost:4000/uber/api/usuario/obtenerPorId?id=${id}`
             const respuesta = await fetch(url)
             const resultado = await respuesta.json();
             
@@ -105,8 +109,6 @@ const EditarUsuario = () => {
             setTelefono(resultado.data.telefono);
             setCorreo(resultado.data.correo);
             
-
-        
         } catch (error) {
             
             console.log(error)
@@ -119,6 +121,11 @@ const EditarUsuario = () => {
     
 
     const handleUpdate = async () => {
+
+        let user = await AsyncStorage.getItem("usuarioAutenticado")
+        user = await JSON.parse(user)
+        const { id } = user.usuario;
+
         if([nombre, apellido, correo ,telefono].includes('')) {
             Alert.alert('Error' , 'No puedes dejar el campo vacio');
             return;
@@ -129,7 +136,7 @@ const EditarUsuario = () => {
 
         try {
             const respuesta = await fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
@@ -150,6 +157,7 @@ const EditarUsuario = () => {
             setApellido('');
             setCorreo('');
             setTelefono('');
+            
         } catch (error) {
             console.log(error);
         }
