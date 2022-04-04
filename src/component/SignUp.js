@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text, Button , TextInput , View  , StyleSheet , ScrollView , Alert} from 'react-native';
 import usePickerUbicaciones from '../hooks/usePickerUbicaciones';
 import RNPickerSelect from 'react-native-picker-select';
@@ -45,7 +46,8 @@ const SignUp = ({navigation}) => {
       const resultado = await respuesta.json();
       const {msj , data} = resultado;
 
-      if(data === 200) {
+      if(data.usuario.id) {
+        
         Alert.alert('Aviso' , msj);
 
         setNombre('');
@@ -54,6 +56,9 @@ const SignUp = ({navigation}) => {
         setPassword('');
         setTelefono('');
 
+        const usuarioAutenticado = resultado.data;
+
+        await AsyncStorage.setItem('usuarioAutenticado', JSON.stringify(usuarioAutenticado));
 
         /* asignar pantalla si eligió conductir */
         if(tipoUsuario === 1) {
