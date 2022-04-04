@@ -1,16 +1,17 @@
 import React,{useEffect, useState} from "react";
 import { StyleSheet, Text, View, Button, FlatList, StatusBar,SectionList, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 
-const Ubicaciones = () =>{
+const Ubicaciones = ({navigation}) =>{
   const[ Ubicaciones, setUbicaciones] = useState([])
   useEffect(()=>{
     const obtenerUser= async()=>{    
     try {
-      const url = `http://192.168.1.248:4000/uber/api/ubicaciones/`
+      const url = `http://192.168.8.227:4000/uber/api/ubicaciones/`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
       setUbicaciones(resultado.data)
@@ -24,7 +25,12 @@ const Ubicaciones = () =>{
     obtenerUser();
   },[])
 
-  
+  const eliminar = async (id)=>{
+    const url = `http://192.168.8.227:4000/uber/api/ubicaciones/eliminarUbicacion?id=${id}`
+    const res = await fetch(url, {method:'DELETE',headers:{'Content-Type':'application/json'}})
+    const resultado = await res.json();
+    navigation.navigate('Ubicaciones');
+  }
 
   return (
     <View style ={styles.container}>
@@ -37,7 +43,7 @@ const Ubicaciones = () =>{
       </View>
       </View>
       <View style={styles.container2}>
-      <Button color={"#0073e6"} title="Guardar Ubicacion"/>
+      <Button  onPress={() => navigation.navigate('GuardarUbicacion')} color={"#0073e6"} title="Guardar Ubicacion"/>
       <ScrollView >
       {Ubicaciones.map(ubicacion=>(
             <>  
@@ -54,7 +60,7 @@ const Ubicaciones = () =>{
           />
 
           <Button color={"#02a33d"} title="Editar Ubicacion"/>
-          <Button color={"#fc0303"} title="Eliminar Ubicacion"/>
+          <Button onPress={() => eliminar(ubicacion.id)} color={"#fc0303"} title="Eliminar Ubicacion"/>
           </>
         
            

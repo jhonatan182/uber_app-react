@@ -1,24 +1,48 @@
 import React, {useEffect,useState} from "react";
-import { StyleSheet, Text, View, Button, Alert, StatusBar, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, StatusBar, Image,TouchableOpacity,ScrollView, TextInput } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import RNPickerSelect from 'react-native-picker-select';
 
-const FormTipoV = ({navigation}) => {
+const EditarTipoV = ({navigation}) => {
 
     const [tipo, setTipo] = useState('');
+    
+    useEffect(() => {
+        const obtenerId= async (id) => {
 
+        
+        //let Dn = await AsyncStorage.getItem("Id") 
+       // Dn = await JSON.parse(Dn)
+        //const {id} = Dn.tipovehiculo;
+        
+        try {
+            const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/obtenerid?id=${id}`
+            const respuesta = await fetch(url, {method:'PUT', headers:{'Content-Type': 'aplicatio/json'}});
+            const resultado = await respuesta.json();
+            
+            setTipo(resultado.data.tipo);
+             
+        } catch (error) {
+            
+            console.log(error)
+        }
 
-    const tipoVAdd = async () => {
+        }
+
+        obtenerId();
+
+    },[])
+
+    const tipoVUpdate = async () => {
         if([tipo].includes('')) {
             Alert.alert('Error' , 'No puedes dejar el campo vacio');
             return;
           }
         
-        const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/guardar`;
+        const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/modificar?id=${id}`
 
         try {
             const respuesta = await fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
@@ -27,14 +51,14 @@ const FormTipoV = ({navigation}) => {
                    tipo
                 })
             });
-           
-             await respuesta.json();       
-            
-            
+
+            const {msj} = await respuesta.json();
+
+            Alert.alert('Aviso' , msj);
+
             setTipo('');
-            navigation.navigate('TipoVehiculos'); 
-          
-        }catch (error) {
+           
+        } catch (error) {
             console.log(error);
         }
     }
@@ -48,7 +72,7 @@ const FormTipoV = ({navigation}) => {
                 backgroundColor="#000"
                     />
                     <View style = {styles.header}>
-                        <Text style = {styles.titulo}>Agregar Tipo Vehiculos</Text>
+                        <Text style = {styles.titulo}>Editar Tipo Vehiculos</Text>
                     </View>
                     <View style = {styles.contenedorPerfil}>
                         
@@ -72,9 +96,9 @@ const FormTipoV = ({navigation}) => {
             </View>
             <View style={styles.botoned}>
                 <Button
-                    title="Agregar"
-                    color={'#008000'}
-                    onPress={tipoVAdd} 
+                    title="Editar"
+                    color={'#0000FF'}
+                    onPress={tipoVUpdate} 
                     
                                 />
             </View>
@@ -170,4 +194,4 @@ const styles = StyleSheet.create({
 
 
 
-export default FormTipoV;
+export default EditarTipoV;

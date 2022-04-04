@@ -1,10 +1,15 @@
 import React,{useEffect, useState} from "react";
 import { StyleSheet, Button,Text, View,SectionList, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
+//import "./App.css";
+//import "bootstrap/dist/css/bootstrap.min.css";
 
 
 
 const TipoVehiculos = () =>{
+  const navigation = useNavigation();
   const[ TipoVehiculos, setTipo] = useState([])
   useEffect(()=>{
     const obtenerUser= async()=>{
@@ -13,7 +18,7 @@ const TipoVehiculos = () =>{
     const {id} = user.usuario
       
     try {
-      const url = `http://192.168.1.248:4000/uber/api/vehiculo/tipo/listar`
+      const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/listar`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
       setTipo(resultado)
@@ -26,9 +31,12 @@ const TipoVehiculos = () =>{
     }
     obtenerUser();
   },[])
-
-  
-  
+    const eliminar = async (id)=>{
+      const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/eliminar?id=${id}`
+      const res = await fetch(url, {method:'DELETE',headers:{'Content-Type':'application/json'}});
+      const resultado = await res.json();
+      navigation.navigate('TipoVehiculos');
+    }
   return (
     <View style ={stylesTipe.container}>
     <View style={stylesTipe.contenedorHeader}>
@@ -38,22 +46,27 @@ const TipoVehiculos = () =>{
     <View style={stylesTipe.lista}>
     </View>
     </View>
-    <Button  title="Agregar Vehiculo" color="#008000"></Button>
+ 
     <View style={stylesTipe.container2}>
+    <Button  onPress={() => navigation.navigate('FormTipoV')} title="Agregar" color="#008000"></Button>
     <ScrollView >
     
       {TipoVehiculos.map(TipoV=>(
-         <View><Button onPress={() => navigation.navigate('FormTipoV')} title="Modificar" color='#000' ></Button>
-         <Button  title="Eliminar" color="#FF0000"></Button>
-         <SectionList style = {{borderBottomWidth:5,marginTop:5,marginBottom:10}}
+         <View style = {{borderBottomWidth:2,marginBottom:3}}>
+         <SectionList 
          sections={[
-           {data: [TipoV.tipo]},
+           {title: 'ID:', data: [TipoV.id]},
+           {title: 'Tipo:', data: [TipoV.tipo]}
            
          ]}
          renderItem={({item}) => <Text style={stylesTipe.item}>{item}</Text>}
          keyExtractor={(item, index) => index}
+         renderSectionHeader={({section}) => <Text style={stylesTipe.sectionHeader}>{section.title}</Text>}
          key={TipoV.id}
-       /></View> 
+       />
+        <Button onPress={() => navigation.navigate('EditarTipoV')} title="Modificar" color='#000'/>
+        <Button onPress={() => eliminar(TipoV.id)} title="Eliminar" color="#FF0000"/>
+       </View> 
       ))}
       
       </ScrollView>
@@ -105,8 +118,8 @@ footer:{
 },
 container2: {
   flex: 1,
- // paddingTop: 25,
-  //width:'100%'
+  paddingTop: 25,
+ width:'100%'
  },
  sectionHeader: {
   paddingTop: 2,

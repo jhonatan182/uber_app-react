@@ -12,7 +12,9 @@ import EditarUsuario from './EditarUsuario';
 import Admin from './Admin';
 import TipoVehiculos from './TipoVehiculos';
 import Ubicaciones from './Ubicaciones';
-
+import FormTipoV from './FormTipoV';
+import EditarTipoV from './EditarTipoV';
+import GuardarUbicacion from './GuardarUbicacion';
 
 const Stack = createNativeStackNavigator();
 export default function Menu() {
@@ -30,6 +32,9 @@ export default function Menu() {
                 <Stack.Screen options={{headerShown: false}} name="Admin" component={Admin}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="TipoVehiculos" component={TipoVehiculos}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Ubicaciones" component={Ubicaciones}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="GuardarUbicacion" component={GuardarUbicacion}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="FormTipoV" component={FormTipoV}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="EditarTipoV" component={EditarTipoV}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 

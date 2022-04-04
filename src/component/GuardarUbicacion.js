@@ -3,18 +3,18 @@ import { StyleSheet, Text, View, Button, Alert, StatusBar, ScrollView, TextInput
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import RNPickerSelect from 'react-native-picker-select';
 
-const FormTipoV = ({navigation}) => {
+const GuardarUbicacion = ({navigation}) => {
 
-    const [tipo, setTipo] = useState('');
+    const [nombre, setNombre] = useState('');
 
 
-    const tipoVAdd = async () => {
-        if([tipo].includes('')) {
+    const UbiAdd = async () => {
+        if([nombre].includes('')) {
             Alert.alert('Error' , 'No puedes dejar el campo vacio');
             return;
           }
         
-        const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/guardar`;
+        const url = `http://192.168.8.227:4000/uber/api/ubicaciones/guardarUbicacion`;
 
         try {
             const respuesta = await fetch(url, {
@@ -24,15 +24,15 @@ const FormTipoV = ({navigation}) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                   tipo
+                   nombre
                 })
             });
            
              await respuesta.json();       
             
             
-            setTipo('');
-            navigation.navigate('TipoVehiculos'); 
+            setNombre('');
+            navigation.navigate('Ubicaciones'); 
           
         }catch (error) {
             console.log(error);
@@ -48,18 +48,18 @@ const FormTipoV = ({navigation}) => {
                 backgroundColor="#000"
                     />
                     <View style = {styles.header}>
-                        <Text style = {styles.titulo}>Agregar Tipo Vehiculos</Text>
+                        <Text style = {styles.titulo}>Agregar Ubicaciones</Text>
                     </View>
                     <View style = {styles.contenedorPerfil}>
                         
                        
                         <View style={styles.contenedorDato}>
                             <View>
-                                <Text style = {styles.label}>Tipo de Vehiculo</Text>
+                                <Text style = {styles.label}>Nombre</Text>
                                     <TextInput
                                         style={styles.input}
-                                        value={tipo}
-                                        onChangeText={text => setTipo(text)}
+                                        value={nombre}
+                                        onChangeText={text => setNombre(text)}
                                     />
                                 
                             </View>
@@ -74,12 +74,12 @@ const FormTipoV = ({navigation}) => {
                 <Button
                     title="Agregar"
                     color={'#008000'}
-                    onPress={tipoVAdd} 
+                    onPress={UbiAdd} 
                     
                                 />
             </View>
             <View style={styles.botonel}>
-                <Button onPress={() => navigation.navigate('TipoVehiculos')}
+                <Button onPress={() => navigation.navigate('Ubicaciones')}
                     title="Atras"
                     color={'#999999'}
                     
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
 
 
 
-export default FormTipoV;
+export default GuardarUbicacion;
