@@ -22,7 +22,7 @@ const SignUp = ({navigation}) => {
     }
 
 
-    const url ='http://192.168.0.12:4000/uber/api/usuario/guardar';
+    const url ='http://192.168.1.3:4000/uber/api/usuario/guardar';
 
     try {
       
@@ -62,7 +62,8 @@ const SignUp = ({navigation}) => {
 
         /* asignar pantalla si eligió conductir */
         if(tipoUsuario === 1) {
-          Alert.alert('contruir' , 'pantalla donde el conductor va ingregar datos de su vehiculo y luego de eso si va mandar a la pnatalla inicio para para conductor');
+          Alert.alert('contruir' , 'Proceda a registrar su vehiculo');
+          navigation.navigate('Conductor');
         } else {
           navigation.navigate('Inicio');
         }

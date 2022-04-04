@@ -13,7 +13,7 @@ const Viajes = () =>{
     const {id} = user.usuario
       
     try {
-      const url = `http://192.168.0.12:4000/uber/api/usuario/viajes/listarViaje?pasajeroId=${id}`
+      const url = `http://192.168.1.3:4000/uber/api/usuario/viajes/listarViaje?pasajeroId=${id}`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
       setViajes(resultado)

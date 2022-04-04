@@ -41,7 +41,7 @@ const Inicio = ({navigation}) => {
 
             try {
                 
-                const url = 'http://192.168.0.12:4000/uber/api/ubicaciones/';
+                const url = 'http://192.168.1.3:4000/uber/api/ubicaciones/';
                 const respuesta = await fetch(url);
                 const resultado = await respuesta.json();
 
