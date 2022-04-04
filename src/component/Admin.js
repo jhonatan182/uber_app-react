@@ -13,10 +13,12 @@ const Admin = ({navigation}) => {
 
         <View style={[styles.contenedor , styles.sombra]}>
             <View style={styles.contenedorAcciones}>
+
             <Text onPress={() => navigation.navigate('Ubicaciones')} style={styles.accion} >Ubicaciones</Text>
                 <Text onPress={() => navigation.navigate('TipoVehiculos')} style={styles.accion} >Tipo de Vehículo</Text>
-                <Text style={styles.accion} >Pasajeros</Text>
-                <Text style={styles.accion} >Conductores</Text>
+                <Text onPress={ () => navigation.navigate('Pasajeros')} style={styles.accion} >Pasajeros</Text>
+                <Text onPress={ () => navigation.navigate('Conductores')} style={styles.accion} >Conductores</Text>
+
             </View>
         </View>
 

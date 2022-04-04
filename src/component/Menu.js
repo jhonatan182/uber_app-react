@@ -15,6 +15,13 @@ import Ubicaciones from './Ubicaciones';
 import FormTipoV from './FormTipoV';
 import EditarTipoV from './EditarTipoV';
 import GuardarUbicacion from './GuardarUbicacion';
+import Conductor from './Conductor';
+import Pasajeros from './Pasajeros';
+import Pasajero from './EditarEstado';
+import Conductores from './Conductores';
+import PerfilConductor from './PerfilConductor';
+import MiVehiculo from './MiVehiculo';
+
 
 const Stack = createNativeStackNavigator();
 export default function Menu() {
@@ -35,6 +42,12 @@ export default function Menu() {
                 <Stack.Screen options={{headerShown: false}} name="GuardarUbicacion" component={GuardarUbicacion}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="FormTipoV" component={FormTipoV}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="EditarTipoV" component={EditarTipoV}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="Conductor" component={Conductor}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="Pasajeros" component={Pasajeros}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="Pasajero" component={Pasajero}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="Conductores" component={Conductores}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="PerfilConductor" component={PerfilConductor}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="MiVehiculo" component={MiVehiculo}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 

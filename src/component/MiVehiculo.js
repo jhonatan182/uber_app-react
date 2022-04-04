@@ -1,19 +1,14 @@
 import React, {useEffect,useState} from "react";
-import { StyleSheet, Text, View, Button, Alert, StatusBar, Image,TouchableOpacity,ScrollView, TextInput } from 'react-native';
-import icono from '../../assets/userIcono.png'
-import lapiz from '../../assets/pencil.png'
-import bandera from '../../assets/hn.png'
-import google from '../../assets/google.png'
-import facebook from '../../assets/facebook.png'
+import { StyleSheet, Text, View, Button, Alert, StatusBar,ScrollView, TextInput } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const EditarUsuario = () => {
+const MiVehiculo = ({navigation}) => {
 
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
-    const [correo, setCorreo] = useState('');
-    const [telefono, setTelefono] =  useState('');
-    const [nombreTitulo , setNombreTitulo] = useState('');
+    const [placa, setPlaca] = useState('');
+    const [marca, setMarca] = useState('');
+    const [modelo, setModelo] =  useState('');
+    const [color, setColor] = useState('');
+
 
     useEffect(() => {
         const obtenerUser= async () => {
@@ -24,17 +19,15 @@ const EditarUsuario = () => {
         const {id} = user.usuario;
         
         try {
-            const url = `http://192.168.1.3:4000/uber/api/usuario/obtenerPorId?id=${id}`
+            const url = `http://192.168.0.12:4000/uber/api/vehiculo/obtenerVehiculoPorUsuario?usuarioId=${id}`
             const respuesta = await fetch(url)
             const resultado = await respuesta.json();
             
-            // console.log(resultado.data)
 
-            setNombre(resultado.data.nombre);
-            setNombreTitulo(resultado.data.nombre + ' ' + resultado.data.apellido);
-            setApellido(resultado.data.apellido);
-            setTelefono(resultado.data.telefono);
-            setCorreo(resultado.data.correo);
+            setPlaca(resultado.placa);
+            setMarca(resultado.marca);
+            setModelo(resultado.modelo);
+            setColor(resultado.color);
             
 
         
@@ -51,41 +44,36 @@ const EditarUsuario = () => {
     
 
     const handleUpdate = async () => {
-        if([nombre, apellido, correo ,telefono].includes('')) {
+        if([placa, marca, modelo ,color].includes('')) {
             Alert.alert('Error' , 'No puedes dejar el campo vacio');
             return;
           }
-        
-
-        const url = `http://192.168.1.248:4000/uber/api/conductor/modificar?id=${id}`
-
-
         try {
-            const respuesta = await fetch(url, {
-                method: 'POST',
+                    
+            let user = await AsyncStorage.getItem("usuarioAutenticado") 
+            user = await JSON.parse(user)
+            const {id} = user.usuario;
+
+            const url = `http://192.168.0.12:4000/uber/api/vehiculo/editar?usuarioId=${id}`;
+
+            const respuesta = await fetch(url , {
+                method: 'PUT',
+                body: JSON.stringify({placa , marca , modelo , color}),
                 headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nombre,
-                    apellido,
-                    correo,
-                    telefono,
-                })
+                    'Content-Type' : 'application/json'
+                }
             });
 
-            const {msj} = await respuesta.json();
+            await respuesta.json();
 
-            Alert.alert('Aviso' , msj);
+            Alert.alert('Actualización', 'Tu vehículo ha sido actualizado');
 
-            setNombre('');
-            setApellido('');
-            setCorreo('');
-            setTelefono('');
+            navigation.navigate('MiVehiculo');
+
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
+        
     }
 
 
@@ -97,35 +85,17 @@ const EditarUsuario = () => {
                 backgroundColor="#000"
                     />
                     <View style = {styles.header}>
-                        <Text style = {styles.titulo}>Editar Cuenta</Text>
+                        <Text style = {styles.titulo}>Mi Vehículo</Text>
                     </View>
                     <View style = {styles.contenedorPerfil}>
-                        <View style = {styles.fotoPerfil}>
-                            <View>
-                                <Image 
-                                    source={icono}
-                                    style={styles.icono}
-                                />
-                                <TouchableOpacity style={styles.botonEditarFoto} >
-                                    <Image 
-                                        source={lapiz}
-                                    style={styles.iconoLapiz}
-                                        />
-                                </TouchableOpacity>
-                            </View>
 
-                            <Text style={styles.nombrePerfil} >{`${nombreTitulo}`}</Text>
-
-
-                        </View>
-                        <View style = {styles.separador}></View>
                         <View style={styles.contenedorDato}>
                             <View>
-                                <Text style = {styles.label}>Nombre</Text>
+                                <Text style = {styles.label}>Placa</Text>
                                     <TextInput
                                         style={styles.input}
-                                        value={nombre}
-                                        onChangeText={text => setNombre(text)}
+                                        value={placa}
+                                        onChangeText={text => setPlaca(text)}
                                     />
                                 
                             </View>
@@ -139,11 +109,11 @@ const EditarUsuario = () => {
                         </View>
                         <View style={styles.contenedorDato}>
                             <View>
-                                <Text style = {styles.label}>Apellido</Text>
+                                <Text style = {styles.label}>Marca</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={apellido}
-                                    onChangeText={text => setApellido(text)}
+                                    value={marca}
+                                    onChangeText={text => setMarca(text)}
                                 />
                             </View>
                             <View>
@@ -156,16 +126,13 @@ const EditarUsuario = () => {
                         </View>
                         <View style={styles.contenedorDato}>
                             <View>
-                                <Text style = {styles.label}>Numero de telefono</Text>
+                                <Text style = {styles.label}>Modelo</Text>
                                 <View style ={styles.imagenDato}>
-                                    <Image 
-                                        source={bandera}
-                                        style = {styles.imagen}
-                                    />
+
                                     <TextInput
                                         style={styles.input}
-                                        value={telefono}
-                                        onChangeText={text => setTelefono(text)}
+                                        value={modelo}
+                                        onChangeText={text => setModelo(text)}
                                     />
                                 </View>
                             </View>
@@ -179,11 +146,11 @@ const EditarUsuario = () => {
                         </View>
                         <View style={styles.contenedorDato}>
                             <View>
-                                <Text style = {styles.label}>Correo Electronico</Text>
+                                <Text style = {styles.label}>Color</Text>
                                 <TextInput
                                     style={styles.input}
-                                    value={correo}
-                                    onChangeText={text => setCorreo(text)}
+                                    value={color}
+                                    onChangeText={text => setColor(text)}
                                 />
                             </View>
                             <View>
@@ -239,11 +206,6 @@ const styles = StyleSheet.create({
         height:33,
         resizeMode:'stretch',
     },
-    separador:{
-        borderBottomColor: '#A7A8AF',
-        borderBottomWidth: 1,
-        paddingVertical:15
-    },
     label:{
         fontSize:16,
         color:'#A7A8AF',
@@ -276,6 +238,7 @@ const styles = StyleSheet.create({
         padding:10,
         backgroundColor:'#000',
         width:'100%',
+        marginTop: 12
     },
     input: {
         width: 200,
@@ -293,4 +256,4 @@ const styles = StyleSheet.create({
 
 
 
-export default EditarUsuario;
+export default MiVehiculo;

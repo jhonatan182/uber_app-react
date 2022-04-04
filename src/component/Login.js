@@ -17,7 +17,9 @@ const Login = ({navigation}) => {
       return;
     } 
 
+
     const url ='http://192.168.8.227:4000/uber/api/autenticacion/inicio-sesion/';
+
 
     try {
       
@@ -55,7 +57,7 @@ const Login = ({navigation}) => {
 
         // conductor
         if(usuarioAutenticado.usuario.tipoUsuario === 1) {
-          Alert.alert('construir' , 'debes de construir la pantalla de conductor')
+          navigation.navigate('PerfilConductor');
 
           //pasajero
         } else if(usuarioAutenticado.usuario.tipoUsuario === 2) {
