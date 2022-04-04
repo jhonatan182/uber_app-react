@@ -10,6 +10,7 @@ import SignUp from './SignUp';
 import Viajes from './Viajes';
 import EditarUsuario from './EditarUsuario';
 import Admin from './Admin';
+import Conductor from './Conductor';
 
 const Stack = createNativeStackNavigator();
 export default function Menu() {
@@ -25,6 +26,7 @@ export default function Menu() {
                 <Stack.Screen options={{headerShown: false}} name="Viajes" component={Viajes}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Editar" component={EditarUsuario}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Admin" component={Admin}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="Conductor" component={Conductor}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
 
