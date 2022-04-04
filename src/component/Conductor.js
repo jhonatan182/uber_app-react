@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Text, Button , TextInput , View  , StyleSheet , ScrollView , Alert} from 'react-native';
 import usePickerUbicaciones from '../hooks/usePickerUbicaciones';
 import RNPickerSelect from 'react-native-picker-select';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Conductor = ({navigation}) => {
 
@@ -9,7 +10,38 @@ const Conductor = ({navigation}) => {
   const [marca, setMarca] = useState('');
   const [modelo, setModelo] = useState('');
   const [color, setColor] = useState('');
+  const [usuarioId, setUsuarioId] = useState('');
   const [tipoVehiculo, setTipoVehiculo] = useState('');
+
+  useEffect(() => {
+    const obtenerUser= async () => {
+
+    
+    let user = await AsyncStorage.getItem("usuarioAutenticado") 
+    user = await JSON.parse(user)
+    const {id} = user.usuario;
+    
+    try {
+        const url = `http://192.168.1.3:4000/uber/api/usuario/obtenerPorId?id=${id}`
+        const respuesta = await fetch(url)
+        const resultado = await respuesta.json();
+        
+        // console.log(resultado.data)
+
+        setUsuarioId(resultado.data.id);
+        
+
+    
+    } catch (error) {
+        
+        console.log(error)
+    }
+
+    }
+
+    obtenerUser();
+
+},[])
 
   const handleSubmit = async() =>{
 
@@ -33,7 +65,7 @@ const Conductor = ({navigation}) => {
           marca,
           modelo,
           color,
-          usuarioId: '53',
+          usuarioId,
           tipoVehiculo
         })
       });
@@ -110,6 +142,16 @@ const Conductor = ({navigation}) => {
                       placeholder='Ingrese el color'
                       value={color}
                       onChangeText={text => setColor(text)}
+                    >
+                    </TextInput>
+                </View>
+
+                <View style={styles.campo}>
+                    <Text style={styles.label}> usuarioId </Text>
+                    <TextInput
+                      style={styles.input}
+                      value={usuarioId}
+                      editable={false}
                     >
                     </TextInput>
                 </View>
