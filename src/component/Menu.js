@@ -10,6 +10,11 @@ import SignUp from './SignUp';
 import Viajes from './Viajes';
 import EditarUsuario from './EditarUsuario';
 import Admin from './Admin';
+import TipoVehiculos from './TipoVehiculos';
+import Ubicaciones from './Ubicaciones';
+import FormTipoV from './FormTipoV';
+import EditarTipoV from './EditarTipoV';
+import GuardarUbicacion from './GuardarUbicacion';
 import Conductor from './Conductor';
 import Pasajeros from './Pasajeros';
 import Pasajero from './EditarEstado';
@@ -32,6 +37,11 @@ export default function Menu() {
                 <Stack.Screen options={{headerShown: false}} name="Viajes" component={Viajes}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Editar" component={EditarUsuario}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Admin" component={Admin}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="TipoVehiculos" component={TipoVehiculos}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="Ubicaciones" component={Ubicaciones}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="GuardarUbicacion" component={GuardarUbicacion}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="FormTipoV" component={FormTipoV}></Stack.Screen>
+                <Stack.Screen options={{headerShown: false}} name="EditarTipoV" component={EditarTipoV}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Conductor" component={Conductor}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Pasajeros" component={Pasajeros}></Stack.Screen>
                 <Stack.Screen options={{headerShown: false}} name="Pasajero" component={Pasajero}></Stack.Screen>
