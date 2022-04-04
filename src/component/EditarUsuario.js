@@ -93,6 +93,7 @@ const EditarUsuario = () => {
         const {id} = user.usuario;
         try {
             const url = `http://192.168.137.1:4000/uber/api/usuario/obtenerPorId?id=${id}`
+
             const respuesta = await fetch(url)
             const resultado = await respuesta.json();
             
@@ -124,6 +125,7 @@ const EditarUsuario = () => {
           }
         
         const url = `http://192.168.137.1:4000/uber/api/conductor/modificar?id=${id}`
+
 
         try {
             const respuesta = await fetch(url, {
