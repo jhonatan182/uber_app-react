@@ -1,7 +1,15 @@
 import React from 'react'
 import { Text , View , StyleSheet , Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Admin = () => {
+const cerrarSesion = async (navigation) => {
+
+    await AsyncStorage.removeItem('usuarioAutenticado');
+    navigation.navigate('Login');
+}
+
+
+const Admin = ({navigation}) => {
   return (
       <>
 
@@ -13,17 +21,19 @@ const Admin = () => {
 
         <View style={[styles.contenedor , styles.sombra]}>
             <View style={styles.contenedorAcciones}>
-                <Text style={styles.accion} >Ubicaciones</Text>
-                <Text style={styles.accion} >Tipo de Vehículo</Text>
-                <Text style={styles.accion} >Pasajeros</Text>
-                <Text style={styles.accion} >Conductores</Text>
+
+            <Text onPress={() => navigation.navigate('Ubicaciones')} style={styles.accion} >Ubicaciones</Text>
+                <Text onPress={() => navigation.navigate('TipoVehiculos')} style={styles.accion} >Tipo de Vehículo</Text>
+                <Text onPress={ () => navigation.navigate('Pasajeros')} style={styles.accion} >Pasajeros</Text>
+                <Text onPress={ () => navigation.navigate('Conductores')} style={styles.accion} >Conductores</Text>
+
             </View>
         </View>
 
         <View style={styles.footer}>
             <Text 
                 style={styles.boton}
-                onPress= {() => Alert.alert('Cerrando' , 'cerrando...')}
+                onPress= {() => cerrarSesion(navigation)}
             >Cerrar Sesión
             </Text>  
         </View>
@@ -47,7 +57,7 @@ const styles = StyleSheet.create({
         padding: 6,
         borderRadius: 6,
         marginBottom: 10,
-        marginTop: 30
+        marginTop: 15
     } ,
     sombra: {
         shadowColor: "#000",

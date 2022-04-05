@@ -11,11 +11,11 @@ const handleCerrarSesion =  async (navigation) => {
 
 }
 
-const Perfil = ({navigation}) =>{
+const PerfilConductor = ({navigation}) =>{
     return (
         <View style={styles.container}>
       <View style={styles.contenedorHeader}>
-        <Text style={styles.TextTitulo}>Perfil</Text>
+        <Text style={styles.TextTitulo}>Perfil Conductor</Text>
       </View>
       <View style={styles.contenedorInfo}>
         <View style={styles.contenedorImagen}>
@@ -25,7 +25,7 @@ const Perfil = ({navigation}) =>{
         </View>
         <View style={styles.ContenedorExtras}>
           <View style={styles.extras}>
-            <Text style={styles.textExtra} onPress={()=>navigation.navigate('Viajes')}>Mis Viajes</Text>
+            <Text style={styles.textExtra} onPress={()=>navigation.navigate('MiVehiculo')}>Mi Vehículo</Text>
           </View>
           <View style={styles.extras}>
             <Text onPress={() => handleCerrarSesion(navigation)} style={styles.textExtra} >Cerrar Sesión</Text>
@@ -105,4 +105,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Perfil;
+export default PerfilConductor;

@@ -10,10 +10,10 @@ const Inicio = ({navigation}) => {
     const distancia = Math.floor((Math.random() * (100 - 1 + 1)) + 1);
     const total = distancia * precioPorKilometro 
 
-    const [detalles , setDetalles] = useState('');
     const [ubicaciones, setUbicaciones] = useState([]);
     const [conductores , setConductores] = useState([]);
     const [pasajero ,setPasajero] = useState({});
+    const [tipoUsuario , setTipoUsuario] = useState(0);
     
     /* usando nuestro hook */
     const [ ubicacionInicio , SelectUbicacionesInicio ] = usePickerUbicaciones('Elige tu punto de partida' , ubicaciones);
@@ -22,12 +22,11 @@ const Inicio = ({navigation}) => {
     
     useEffect(() => {
 
-        console.log(pasajero.id)
-
         const obtenerUsuarioStorage = async () => {
 
             let usuario =  await AsyncStorage.getItem('usuarioAutenticado');
             usuario = await JSON.parse(usuario);
+            setTipoUsuario(usuario.usuario.tipoUsuario);
 
             const {usuario : { id , nombre}} = usuario
 
@@ -42,6 +41,7 @@ const Inicio = ({navigation}) => {
             try {
                 
                 const url = 'http://192.168.0.12:4000/uber/api/ubicaciones/';
+
                 const respuesta = await fetch(url);
                 const resultado = await respuesta.json();
 
@@ -148,6 +148,16 @@ const Inicio = ({navigation}) => {
         }
     }
 
+    const irAPerfil = navigation => {
+
+        if(tipoUsuario === 1) {
+            navigation.navigate('PerfilConductor')
+        } else {
+            navigation.navigate('Perfil')
+        }
+
+    }   
+
     return ( 
         <View style = {styles.container}>
                   <StatusBar
@@ -158,7 +168,7 @@ const Inicio = ({navigation}) => {
                     <View style = {styles.barraTitulo}>
                         <Text style ={styles.textoBlanco}>UBER</Text>
                         <Text style={styles.textoBlanco} 
-                              onPress={() => navigation.navigate('Perfil')}>Mi Perfil</Text>
+                              onPress={() => irAPerfil(navigation) }>Mi Perfil</Text>
                     </View>
                     <View style = {styles.cuerpoInicio}>
                         <View style = {styles.encabezado}>
@@ -180,16 +190,7 @@ const Inicio = ({navigation}) => {
                                     <Text style = {styles.label}>Conductor</Text>
                                     <SelectConductores />
                                 </View>
-                                <View style = {styles.cuerpoDetalles}>
-                                    <Text style = {styles.label}>Detalles del viaje</Text>
-                                    <TextInput
-                                        onChangeText={ text => setDetalles(text) }
-                                        value={detalles}
-                                        style = {styles.inputMulti}
-                                        multiline ={true}
-                                    >
-                                    </TextInput>
-                                </View>
+
                                 <Button
                                     style = {styles.boton}
                                     title="Pedir Uber"
