@@ -10,79 +10,22 @@ import * as ImagePicker from 'expo-image-picker';
 
 const EditarUsuario = () => {
     
+    let data;
     const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
     const [image, setImage] = useState(null);
+    const [nombre, setNombre] = useState('');
+    const [apellido, setApellido] = useState('');
+    const [correo, setCorreo] = useState('');
+    const [telefono, setTelefono] =  useState('');
+    const [nombreTitulo , setNombreTitulo] = useState('');
+
     useEffect(() => {(async () => {
+
         const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
         setHasGalleryPermission(galleryStatus.status === 'granted');
+
     })();
     }, []);
-
-    const pickImage = async () => {
-
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-        });
-
-        if (!result.cancelled) {
-          setImage(result.uri);
-        }
-
-        console.log(image);
-
-        guardarArchivo();
-        
-    };
-
-    const guardarArchivo = async ()=>{
-
-        let user = await AsyncStorage.getItem("usuarioAutenticado") 
-        user = await JSON.parse(user)
-        const {id} = user.usuario;
-        let token = user.token
-        console.log(token);
-
-        let data = new FormData()
-        data.append('img',{
-            uri:image,
-            type:'jpeg',
-            name:'null'
-        })
-        try {
-
-        const url =`http://192.168.137.1:4000/uber/api/archivos/img/?id=${filename}`;   
-
-        const respuesta = await fetch(url , {
-            method: 'POST',
-            headers: {
-              Accept : 'multipart/form-data',
-              'Content-Type' : 'multipart/form-data',
-              "Authorization" : `Bearer ${token}`
-            } ,
-            body:data
-          });
-        // const resultado = await respuesta.json();
-
-        } catch (error) {
-
-          console.log(error);  
-          
-        }
-    }
-    
-
-    if (hasGalleryPermission === false) {
-        return <Text>No access to Gallery</Text>;
-    }
-
-    const [nombre, setNombre] = useState([]);
-    const [apellido, setApellido] = useState([]);
-    const [correo, setCorreo] = useState([]);
-    const [telefono, setTelefono] =  useState([]);
-    const [nombreTitulo , setNombreTitulo] = useState([]);
 
     useEffect(() => {
 
@@ -97,7 +40,7 @@ const EditarUsuario = () => {
 
         try {
 
-            const url = `https://localhost:4000/uber/api/usuario/obtenerPorId?id=${id}`
+            const url = `http://192.168.0.12:4000/uber/api/usuario/obtenerPorId?id=${id}`
             const respuesta = await fetch(url)
             const resultado = await respuesta.json();
             
@@ -118,6 +61,75 @@ const EditarUsuario = () => {
 
         obtenerUser();
     },[])
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+          });
+  
+          if (!result.cancelled) {
+            setImage(result.uri);
+          }
+  
+          console.log(image);
+          
+
+          data = new FormData()
+          data.append('img',{
+              uri:image,
+              type:'jpeg',
+              name:'null'
+          })
+
+        
+    };
+
+    const guardarArchivo = async ()=>{
+
+
+
+        //obteniedno el id del usuario
+        let user = await AsyncStorage.getItem("usuarioAutenticado") 
+        user = await JSON.parse(user)
+        const {id} = user.usuario;
+
+
+        //obteniendo el token
+        let token = await AsyncStorage.getItem("tokenUsuario") 
+        token = await JSON.parse(token)
+        //console.log(token)
+        try {
+
+        const url =`http://192.168.0.12:4000/uber/api/archivos/img?id=${id}`;   
+
+        const respuesta = await fetch(url , {
+            method: 'POST',
+            headers: {
+              Accept : 'multipart/form-data',
+              'Content-Type' : 'multipart/form-data',
+              "Authorization" : `Bearer ${token}`,
+            } ,
+            body:{
+                img : data
+            }
+            
+          });
+        await respuesta.json();
+
+        } catch (error) {
+
+          console.log(error);  
+          
+        }
+    }
+    
+
+    if (hasGalleryPermission === false) {
+        return <Text>No access to Gallery</Text>;
+    }
     
 
     const handleUpdate = async () => {
@@ -131,7 +143,7 @@ const EditarUsuario = () => {
             return;
           }
         
-        const url = `http://192.168.137.1:4000/uber/api/conductor/modificar?id=${id}`
+        const url = `http://192.168.0.12:4000/uber/api/conductor/modificar?id=${id}`
 
 
         try {
@@ -150,13 +162,11 @@ const EditarUsuario = () => {
             });
 
             const {msj} = await respuesta.json();
+            console.log(respuesta);
+            return;
 
             Alert.alert('Aviso' , msj);
 
-            setNombre('');
-            setApellido('');
-            setCorreo('');
-            setTelefono('');
             
         } catch (error) {
             console.log(error);
@@ -189,9 +199,10 @@ const EditarUsuario = () => {
                             </View>
 
                             <Text style={styles.nombrePerfil} >{`${nombreTitulo}`}</Text>
-
-
+                            
                         </View>
+                        <Button onPress={guardarArchivo } title="Guardar mi foto" />
+
                         <View style = {styles.separador}></View>
                         <View style={styles.contenedorDato}>
                             <View>
@@ -288,7 +299,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginBottom: 20,
     },  
     titulo:{
         backgroundColor:'#000',

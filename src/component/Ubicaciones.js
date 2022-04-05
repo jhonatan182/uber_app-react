@@ -11,7 +11,7 @@ const Ubicaciones = ({navigation}) =>{
   useEffect(()=>{
     const obtenerUser= async()=>{    
     try {
-      const url = `http://192.168.8.227:4000/uber/api/ubicaciones/`
+      const url = `http://192.168.0.12:4000/uber/api/ubicaciones/`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
       setUbicaciones(resultado.data)
@@ -26,11 +26,36 @@ const Ubicaciones = ({navigation}) =>{
   },[])
 
   const eliminar = async (id)=>{
-    const url = `http://192.168.8.227:4000/uber/api/ubicaciones/eliminarUbicacion?id=${id}`
+    const url = `http://192.168.0.12:4000/uber/api/ubicaciones/eliminarUbicacion?id=${id}`
     const res = await fetch(url, {method:'DELETE',headers:{'Content-Type':'application/json'}})
     const resultado = await res.json();
     navigation.navigate('Ubicaciones');
   }
+
+  const prepararEditar = async (id) => {
+    
+    try {
+
+      const url = `http://192.168.0.12:4000/uber/api/ubicaciones/obtenerId?id=${id}`
+      const respuesta = await fetch(url);
+      const resultado = await respuesta.json();
+
+      const info = {
+        id : resultado.data.id,
+        nombre: resultado.data.nombre
+      }
+
+      await AsyncStorage.setItem('Ubicacion', JSON.stringify(info));
+      navigation.navigate('EditarUbicacion');
+       
+  } catch (error) {
+      
+      console.log(error)
+  }
+
+
+  }
+
 
   return (
     <View style ={styles.container}>
@@ -59,7 +84,7 @@ const Ubicaciones = ({navigation}) =>{
             key={ubicacion.id}
           />
 
-          <Button color={"#02a33d"} title="Editar Ubicacion"/>
+          <Button onPress={() => prepararEditar(ubicacion.id)} color={"#02a33d"} title="Editar Ubicacion"/>
           <Button onPress={() => eliminar(ubicacion.id)} color={"#fc0303"} title="Eliminar Ubicacion"/>
           </>
         

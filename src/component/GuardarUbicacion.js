@@ -14,7 +14,7 @@ const GuardarUbicacion = ({navigation}) => {
             return;
           }
         
-        const url = `http://192.168.8.227:4000/uber/api/ubicaciones/guardarUbicacion`;
+        const url = `http://192.168.0.12:4000/uber/api/ubicaciones/guardarUbicacion`;
 
         try {
             const respuesta = await fetch(url, {

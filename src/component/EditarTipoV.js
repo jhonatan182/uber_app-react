@@ -5,40 +5,31 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const EditarTipoV = ({navigation}) => {
 
     const [tipo, setTipo] = useState('');
-    
+    const [id , setId] = useState(0);
+
     useEffect(() => {
-        const obtenerId= async (id) => {
 
         
-        //let Dn = await AsyncStorage.getItem("Id") 
-       // Dn = await JSON.parse(Dn)
-        //const {id} = Dn.tipovehiculo;
+        const obtenerTipoVehiculo= async () => {
+
         
-        try {
-            const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/obtenerid?id=${id}`
-            const respuesta = await fetch(url, {method:'PUT', headers:{'Content-Type': 'aplicatio/json'}});
-            const resultado = await respuesta.json();
-            
-            setTipo(resultado.data.tipo);
-             
-        } catch (error) {
-            
-            console.log(error)
+            let Vehiculo = await AsyncStorage.getItem('TipoVehiculo');
+            Vehiculo = await JSON.parse(Vehiculo);
+            setTipo(Vehiculo.tipo);
+            setId(Vehiculo.id)
+                        
         }
-
-        }
-
-        obtenerId();
-
+        obtenerTipoVehiculo();
+        
     },[])
 
-    const tipoVUpdate = async () => {
+    const tipoVUpdate = async (navigation) => {
         if([tipo].includes('')) {
             Alert.alert('Error' , 'No puedes dejar el campo vacio');
             return;
           }
         
-        const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/modificar?id=${id}`
+        const url = `http://192.168.0.12:4000/uber/api/vehiculo/tipo/modificar?id=${id}`
 
         try {
             const respuesta = await fetch(url, {
@@ -52,11 +43,10 @@ const EditarTipoV = ({navigation}) => {
                 })
             });
 
-            const {msj} = await respuesta.json();
+            const resultado = await respuesta.json();
 
-            Alert.alert('Aviso' , msj);
-
-            setTipo('');
+            Alert.alert('Exito', resultado);
+            navigation.navigate('TipoVehiculos')
            
         } catch (error) {
             console.log(error);
@@ -98,7 +88,7 @@ const EditarTipoV = ({navigation}) => {
                 <Button
                     title="Editar"
                     color={'#0000FF'}
-                    onPress={tipoVUpdate} 
+                    onPress={() =>tipoVUpdate(navigation)} 
                     
                                 />
             </View>
