@@ -20,12 +20,12 @@ const PerfilConductor = ({navigation}) =>{
       <View style={styles.contenedorInfo}>
         <View style={styles.contenedorImagen}>
         <Image source={imagenUsuario} style={styles.imagen}/>
-        <Text style={styles.textUsuario}>Nombre Usuario</Text>
+        <Text style={styles.textUsuario}>Mi perfil</Text>
         <Button onPress={() => navigation.navigate('Editar')} title="Modificar Perfil" color="#828282"></Button>
         </View>
         <View style={styles.ContenedorExtras}>
           <View style={styles.extras}>
-            <Text style={styles.textExtra} onPress={()=>navigation.navigate('MiVehiculo')}>Mi Vehiculo</Text>
+            <Text style={styles.textExtra} onPress={()=>navigation.navigate('MiVehiculo')}>Mi Vehículo</Text>
           </View>
           <View style={styles.extras}>
             <Text onPress={() => handleCerrarSesion(navigation)} style={styles.textExtra} >Cerrar Sesión</Text>

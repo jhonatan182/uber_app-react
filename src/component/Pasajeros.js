@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     },
     contenedor: {
         width: "94%",
-        height: 380,
+        height: 400,
         margin: 10,
         backgroundColor: "#f3f4f6",
         borderRadius: 6,

@@ -20,7 +20,7 @@ const Perfil = ({navigation}) =>{
       <View style={styles.contenedorInfo}>
         <View style={styles.contenedorImagen}>
         <Image source={imagenUsuario} style={styles.imagen}/>
-        <Text style={styles.textUsuario}>Nombre Usuario</Text>
+        <Text style={styles.textUsuario}>Mi perfil</Text>
         <Button onPress={() => navigation.navigate('Editar')} title="Modificar Perfil" color="#828282"></Button>
         </View>
         <View style={styles.ContenedorExtras}>

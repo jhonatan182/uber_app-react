@@ -18,7 +18,7 @@ const Login = ({navigation}) => {
     } 
 
 
-    const url ='http://192.168.8.227:4000/uber/api/autenticacion/inicio-sesion/';
+    const url ='http://192.168.0.12:4000/uber/api/autenticacion/inicio-sesion/';
 
 
     try {
@@ -45,8 +45,10 @@ const Login = ({navigation}) => {
         
 
         const usuarioAutenticado = resultado.data;
+        const tokenUsuario = resultado.data.token;
 
         await AsyncStorage.setItem('usuarioAutenticado', JSON.stringify(usuarioAutenticado));
+        await AsyncStorage.setItem('tokenUsuario', JSON.stringify(tokenUsuario));
 
         Alert.alert('Inicio de sesion exitoso' , `Bienvenido de nuevo ${nombre} ${apellido} `);
         
@@ -57,7 +59,7 @@ const Login = ({navigation}) => {
 
         // conductor
         if(usuarioAutenticado.usuario.tipoUsuario === 1) {
-          navigation.navigate('PerfilConductor');
+          navigation.navigate('PanelConductor');
 
           //pasajero
         } else if(usuarioAutenticado.usuario.tipoUsuario === 2) {

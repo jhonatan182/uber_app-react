@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from "react";
-import { StyleSheet, Button,Text, View,SectionList, ScrollView } from "react-native";
+import { StyleSheet,Alert, Button,Text, View,SectionList, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,7 +10,8 @@ import { useNavigation } from '@react-navigation/native';
 
 const TipoVehiculos = () =>{
   const navigation = useNavigation();
-  const[ TipoVehiculos, setTipo] = useState([])
+  const[ TipoVehiculos, setTipo] = useState([]);
+
   useEffect(()=>{
     const obtenerUser= async()=>{
     let user= await AsyncStorage.getItem("usuarioAutenticado") 
@@ -18,7 +19,7 @@ const TipoVehiculos = () =>{
     const {id} = user.usuario
       
     try {
-      const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/listar`
+      const url = `http://192.168.0.12:4000/uber/api/vehiculo/tipo/listar`
       const respuesta = await fetch(url)
       const resultado = await respuesta.json();
       setTipo(resultado)
@@ -30,13 +31,41 @@ const TipoVehiculos = () =>{
 
     }
     obtenerUser();
-  },[])
+  },[]);
+
     const eliminar = async (id)=>{
-      const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/eliminar?id=${id}`
+      const url = `http://192.168.0.12:4000/uber/api/vehiculo/tipo/eliminar?id=${id}`
       const res = await fetch(url, {method:'DELETE',headers:{'Content-Type':'application/json'}});
       const resultado = await res.json();
-      navigation.navigate('TipoVehiculos');
+      
+      Alert.alert('Notificación', resultado)
     }
+
+    const prepararEditar = async (id) => {
+      
+      try {
+        const url = `http://192.168.0.12:4000/uber/api/vehiculo/tipo/obtenerid?id=${id}`
+        const respuesta = await fetch(url);
+        const resultado = await respuesta.json();
+        
+        const info = {
+          id : resultado.data.id,
+          tipo: resultado.data.tipo
+        }
+
+        await AsyncStorage.setItem('TipoVehiculo', JSON.stringify(info));
+        navigation.navigate('EditarTipoV');
+         
+    } catch (error) {
+        
+        console.log(error)
+    }
+
+
+
+    }
+
+
   return (
     <View style ={stylesTipe.container}>
     <View style={stylesTipe.contenedorHeader}>
@@ -64,7 +93,7 @@ const TipoVehiculos = () =>{
          renderSectionHeader={({section}) => <Text style={stylesTipe.sectionHeader}>{section.title}</Text>}
          key={TipoV.id}
        />
-        <Button onPress={() => navigation.navigate('EditarTipoV')} title="Modificar" color='#000'/>
+        <Button onPress={() => prepararEditar(TipoV.id)} title="Modificar" color='#000'/>
         <Button onPress={() => eliminar(TipoV.id)} title="Eliminar" color="#FF0000"/>
        </View> 
       ))}

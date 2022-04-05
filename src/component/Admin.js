@@ -1,5 +1,13 @@
 import React from 'react'
 import { Text , View , StyleSheet , Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const cerrarSesion = async (navigation) => {
+
+    await AsyncStorage.removeItem('usuarioAutenticado');
+    navigation.navigate('Login');
+}
+
 
 const Admin = ({navigation}) => {
   return (
@@ -25,7 +33,7 @@ const Admin = ({navigation}) => {
         <View style={styles.footer}>
             <Text 
                 style={styles.boton}
-                onPress= {() => Alert.alert('Cerrando' , 'cerrando...')}
+                onPress= {() => cerrarSesion(navigation)}
             >Cerrar Sesión
             </Text>  
         </View>
@@ -49,7 +57,7 @@ const styles = StyleSheet.create({
         padding: 6,
         borderRadius: 6,
         marginBottom: 10,
-        marginTop: 30
+        marginTop: 15
     } ,
     sombra: {
         shadowColor: "#000",

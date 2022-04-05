@@ -22,7 +22,7 @@ const Conductor = ({navigation}) => {
     const {id} = user.usuario;
     
     try {
-        const url = `http://192.168.1.3:4000/uber/api/usuario/obtenerPorId?id=${id}`
+        const url = `http://192.168.0.12:4000/uber/api/usuario/obtenerPorId?id=${id}`
         const respuesta = await fetch(url)
         const resultado = await respuesta.json();
         
@@ -31,7 +31,6 @@ const Conductor = ({navigation}) => {
         setUsuarioId(resultado.data.id);
         
 
-    
     } catch (error) {
         
         console.log(error)
@@ -50,7 +49,7 @@ const Conductor = ({navigation}) => {
       return;
     }
 
-    const url = 'http://192.168.1.3:4000/uber/api/vehiculo/nuevo-vehiculo';
+    const url = 'http://192.168.0.12:4000/uber/api/vehiculo/nuevo-vehiculo';
 
     try{
 
@@ -71,22 +70,20 @@ const Conductor = ({navigation}) => {
       });
 
       const resultado = await respuesta.json();
-      const {msj, data} = resultado;
       
-
-      if(data === 200){
-        Alert.alert('Aviso', msj);
+      if(resultado){
+        Alert.alert('Aviso', 'Tu vehículo fue agregado correctamente');
 
         setPlaca('');
         setMarca('');
         setModelo('');
         setColor('');
 
-        navigation.navigate('Inicio');
+        navigation.navigate('PaneConductor');
 
       }
       else{
-        Alert.alert('Aviso', msj);
+        Alert.alert('Aviso', 'Error al guardar tu vehículo');
       }
 
     }catch(error){
@@ -146,16 +143,6 @@ const Conductor = ({navigation}) => {
                     </TextInput>
                 </View>
 
-                <View style={styles.campo}>
-                    <Text style={styles.label}> usuarioId </Text>
-                    <TextInput
-                      style={styles.input}
-                      value={usuarioId}
-                      editable={false}
-                    >
-                    </TextInput>
-                </View>
-
                 <View style= {styles.campo}>
                   <Text style= {styles.label} >¿Cual es el tipo de vehiculo?</Text>
 
@@ -169,10 +156,9 @@ const Conductor = ({navigation}) => {
                     value ={tipoVehiculo}
                     onValueChange={ value => ( setTipoVehiculo(value)) }
                     items={[
-                      {key: 4 , label: 'Suv' , value: 4},
-                      {key: 3 , label: 'Pick-up' , value: 3},
+                      {key: 4 , label: 'SUV' , value: 4},
+                      {key: 3 , label: 'Pick Up' , value: 1},
                       {key: 2 , label: 'Sedan' , value: 2},
-                      {key: 1 , label: 'Camioneta' , value: 1},
                     ]} 
                     />
             </View>

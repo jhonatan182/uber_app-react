@@ -14,7 +14,7 @@ const FormTipoV = ({navigation}) => {
             return;
           }
         
-        const url = `http://192.168.8.227:4000/uber/api/vehiculo/tipo/guardar`;
+        const url = `http://192.168.0.12:4000/uber/api/vehiculo/tipo/guardar`;
 
         try {
             const respuesta = await fetch(url, {
